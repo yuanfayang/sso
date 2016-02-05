@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <inceptionYear>2016</inceptionYear>
     <modules>
-        <module>sso-web</module>
+        <module>sso-api</module>
         <module>sso-common</module>
         <module>sso-core</module>
         <module>sso-exception</module>
@@ -22,9 +22,18 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <dependencies>
+        <!--test begin-->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+        </dependency>
+        <!--test end-->
+    </dependencies>
+
     <build>
         <finalName>sso</finalName>
-
         <plugins>
             <!--<plugin>
                 <groupId>org.apache.maven.plugins</groupId>
