@@ -6,19 +6,15 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>sso-rest</artifactId>
+    <artifactId>sso-api</artifactId>
     <packaging>war</packaging>
-    <name>sso-web Maven Webapp</name>
+    <name>sso-api</name>
     <url>http://maven.apache.org</url>
     <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>3.8.1</version>
-            <scope>test</scope>
-        </dependency>
+
+
     </dependencies>
     <build>
-        <finalName>sso-rest</finalName>
+        <finalName>sso-api</finalName>
     </build>
 </project>
