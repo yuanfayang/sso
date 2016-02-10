@@ -12,4 +12,7 @@
     <artifactId>sso-core</artifactId>
 
 
+    <build>
+        <finalName>sso-core</finalName>
+    </build>
 </project>

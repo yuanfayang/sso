@@ -11,5 +11,9 @@
 
     <artifactId>sso-common</artifactId>
 
+    <build>
+        <finalName>sso-common</finalName>
+    </build>
+
 
 </project>

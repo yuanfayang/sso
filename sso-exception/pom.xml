@@ -12,4 +12,7 @@
     <artifactId>sso-exception</artifactId>
 
 
+    <build>
+        <finalName>sso-exception</finalName>
+    </build>
 </project>
