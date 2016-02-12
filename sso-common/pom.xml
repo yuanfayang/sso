@@ -10,6 +10,15 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>sso-common</artifactId>
+    <dependencies>
+        <!--modules dependencies begin-->
+        <dependency>
+            <groupId>com.changhong.sso</groupId>
+            <artifactId>sso-exception</artifactId>
+            <version>${parent.version}</version>
+        </dependency>
+        <!--modules dependencies end-->
+    </dependencies>
 
     <build>
         <finalName>sso-common</finalName>
