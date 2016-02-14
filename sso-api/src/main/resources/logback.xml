@@ -14,7 +14,7 @@
 		<File>/data/logs/app/sqlExecute.log</File>
 		<Encoding>UTF-8</Encoding>
 		<encoder>
-			<pattern>[sso] %d{yyyy-MM-dd HH:mm:ss} [%t:%r] - [%p] %m%n</pattern>
+			<pattern>[sso:api] %d{yyyy-MM-dd HH:mm:ss} [%t:%r] - [%p] %m%n</pattern>
 		</encoder>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>DRUID</level>
@@ -30,7 +30,7 @@
 	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
 		<Target>System.out</Target>
 		<encoder>
-			<pattern>[sso] %d{yyyy-MM-dd HH:mm:ss} %5p %c{1}:%L - %m%n</pattern>
+			<pattern>[sso:api] %d{yyyy-MM-dd HH:mm:ss} %5p %c{1}:%L - %m%n</pattern>
 		</encoder>
 	</appender>
 	<appender name="D" class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -40,7 +40,7 @@
 		<Append>true</Append>
 		<File>/data/logs/app/app.log</File>
 		<encoder>
-			<pattern>[sso] %d{yyyy-MM-dd HH:mm:ss} [%t:%r] - [%p] %m%n</pattern>
+			<pattern>[sso:api] %d{yyyy-MM-dd HH:mm:ss} [%t:%r] - [%p] %m%n</pattern>
 		</encoder>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>INFO</level>
@@ -53,7 +53,7 @@
 		<Append>true</Append>
 		<File>/data/logs/app/app-error.log</File>
 		<encoder>
-			<pattern>[sso] %d{yyyy-MM-dd HH:mm:ss} [%t:%r] - [%p] %m%n</pattern>
+			<pattern>[sso:api] %d{yyyy-MM-dd HH:mm:ss} [%t:%r] - [%p] %m%n</pattern>
 		</encoder>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>ERROR</level>

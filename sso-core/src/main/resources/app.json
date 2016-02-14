@@ -1,0 +1,9 @@
+[
+  {
+    "appId":"1",
+    "appName":"SSO",
+    "host":"http://www.sso.newb.com",
+    "logoutUrl":"http://www.t.tt",
+    "isSSOServer":true
+  }
+]
