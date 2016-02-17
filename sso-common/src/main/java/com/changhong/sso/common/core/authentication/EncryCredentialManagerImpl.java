@@ -38,7 +38,7 @@ public class EncryCredentialManagerImpl implements EncryCredentialManager {
     }
 
     @Override
-    public EncryCredentialInfo decrypt(EncryCredential encryCredential) throws Exception {
+    public EncryCredentialInfo decrypt(EncryCredential encryCredential) throws InvalidEncryededentialException {
         //判空
         if (encryCredential != null && !StringUtils.isEmpty(encryCredential.getCredential())) {
             String credential = encryCredential.getCredential();
@@ -83,10 +83,25 @@ public class EncryCredentialManagerImpl implements EncryCredentialManager {
 
     @Override
     public boolean checkEncryCredentialInfo(EncryCredentialInfo encryCredentialInfo) {
+        if(encryCredentialInfo!=null){
+            //无凭据对应的用户标识，则无效。
+            if(StringUtils.isEmpty(encryCredentialInfo.getUserId())){
+                return false;
+            }
+            Date now = new Date();
+            if(encryCredentialInfo.getExpiredTime()!=null){
+                //将未来过期时间减去当前时间。
+                long deta = encryCredentialInfo.getExpiredTime().getTime() - now.getTime();
+                //若差值大于0，表示过期时间还没有到，凭据继续可以有效使用。
+                if(deta>0){
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
-    private EncryCredentialInfo parseEncryCredential(String credential) throws Exception {
+    private EncryCredentialInfo parseEncryCredential(String credential) throws InvalidEncryededentialException {
         EncryCredentialInfo encryCredentialInfo = new EncryCredentialInfo();
         try {
             //先进行URL解码
@@ -146,6 +161,10 @@ public class EncryCredentialManagerImpl implements EncryCredentialManager {
                 throw InvalidEncryededentialException.INSTANCE;
             }
         } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            logger.log(Level.SEVERE, "parse encry credential exception:" + e);
+            throw InvalidEncryededentialException.INSTANCE;
+        } catch (Exception e) {
             e.printStackTrace();
             logger.log(Level.SEVERE, "parse encry credential exception:" + e);
             throw InvalidEncryededentialException.INSTANCE;

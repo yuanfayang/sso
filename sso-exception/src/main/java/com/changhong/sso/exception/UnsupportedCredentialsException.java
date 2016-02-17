@@ -12,7 +12,7 @@ import java.io.Serializable;
 public class UnsupportedCredentialsException extends InvalidCrendentialException implements Serializable {
     private static final long serialVersionUID = -8089117567480597076L;
 
-    UnsupportedCredentialsException INSTANCE = new UnsupportedCredentialsException();
+    public static final UnsupportedCredentialsException INSTANCE = new UnsupportedCredentialsException();
 
     private UnsupportedCredentialsException() {
         super();

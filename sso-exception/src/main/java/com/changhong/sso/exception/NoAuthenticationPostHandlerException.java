@@ -12,7 +12,7 @@ import java.io.Serializable;
 public class NoAuthenticationPostHandlerException extends AuthenticationException implements Serializable {
     private static final long serialVersionUID = -8650115044489480168L;
 
-    NoAuthenticationPostHandlerException INSTANCE = new NoAuthenticationPostHandlerException();
+    public static final NoAuthenticationPostHandlerException INSTANCE = new NoAuthenticationPostHandlerException();
 
     private NoAuthenticationPostHandlerException() {
         super(ExceptionConstants.NO_AUTHENTICATIONPOSTHANDLER_CODE, ExceptionConstants.NO_AUTHENTICATIONPOSTHANDLER_MSGKEY);

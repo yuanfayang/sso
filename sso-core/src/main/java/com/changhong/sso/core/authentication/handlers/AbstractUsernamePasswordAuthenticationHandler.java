@@ -51,7 +51,7 @@ public abstract class AbstractUsernamePasswordAuthenticationHandler extends
 	 * Abstract convenience method that assumes the credentials passed in are a
 	 * subclass of UsernamePasswordCredentials.
 	 * 
-	 * @param credentials
+	 * @param credential
 	 *            the credentials representing the Username and Password
 	 *            presented to CAS
 	 * @return true if the credentials are authentic, false otherwise.

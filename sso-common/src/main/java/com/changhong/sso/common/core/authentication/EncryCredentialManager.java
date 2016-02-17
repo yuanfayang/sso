@@ -1,6 +1,7 @@
 package com.changhong.sso.common.core.authentication;
 
 import com.changhong.sso.common.core.entity.EncryCredentialInfo;
+import com.changhong.sso.exception.InvalidEncryededentialException;
 
 /**
  * @Author: Fayang Yuan
@@ -16,7 +17,7 @@ public interface EncryCredentialManager {
      * @param encryCredential 加密和编码后的凭据信息
      * @return 解密和解码后的凭证信息
      */
-    EncryCredentialInfo decrypt(EncryCredential encryCredential) throws Exception;
+    EncryCredentialInfo decrypt(EncryCredential encryCredential) throws InvalidEncryededentialException;
 
     /**
      * 对凭证信息进行加密和编码处理，得到一个加密和编码后的凭证字符串
