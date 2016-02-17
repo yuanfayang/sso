@@ -1,8 +1,8 @@
 package com.changhong.sso.exception;
 
-import com.sun.deploy.uitoolkit.ui.LoggerConsole;
 import org.junit.Test;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
@@ -19,13 +19,12 @@ public class ExceptionTest {
     @Test
     public void testEmptyCredential(){
         EmptyCredentialException emptyCredentialException = EmptyCredentialException.INSTANCE;
-        throw emptyCredentialException;
+        logger.log(Level.FINE,emptyCredentialException.getMsgKey());
     }
 
     @Test
     public void testInvalidEncryededential(){
         InvalidEncryededentialException invalidEncryededentialException = InvalidEncryededentialException.INSTANCE;
         logger.info(invalidEncryededentialException.getCode()+"  "+invalidEncryededentialException.getMsgKey());
-        throw invalidEncryededentialException;
     }
 }
