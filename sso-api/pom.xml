@@ -13,6 +13,24 @@
     <url>http://maven.apache.org</url>
     <description>本模块包含SSO对外提供的各种接入</description>
     <dependencies>
+        <!--modules dependencies begin-->
+        <dependency>
+            <groupId>com.changhong.sso</groupId>
+            <artifactId>sso-core</artifactId>
+            <version>${parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.changhong.sso</groupId>
+            <artifactId>sso-common</artifactId>
+            <version>${parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.changhong.sso</groupId>
+            <artifactId>sso-exception</artifactId>
+            <version>${parent.version}</version>
+        </dependency>
+        <!--modules dependencies end-->
+
         <!--servlet begin-->
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -52,8 +70,17 @@
             <version>2.4.0</version>
         </dependency>
         <!--jackson end-->
+
+        <!--jstl begin-->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
+        <!--jstl end-->
+
     </dependencies>
     <build>
-        <finalName>sso-api</finalName>
+        <finalName>sso</finalName>
     </build>
 </project>

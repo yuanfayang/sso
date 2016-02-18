@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--组合凭证解析器-->
+    <bean id="credentialResolver" class="com.changhong.sso.api.resolver.CompositeCredentialResolver">
+        <property name="usernamePasswordCredentialResolver">
+            <bean class="com.changhong.sso.api.resolver.UsernamePasswordCredentialResolver"></bean>
+        </property>
+        <property name="encryCredentialResolver">
+            <bean class="com.changhong.sso.api.resolver.EncryCredentialResolver"></bean>
+        </property>
+    </bean>
+
+    <!--SSO 核心接口服务-->
+    <bean id="ssoService" class="com.changhong.sso.core.service.SSOServiceImpl" autowire="byName"></bean>
+
+    <bean id="loginResultToView" class="com.changhong.sso.api.result.DefaultLoginResultToView"></bean>
+
+    <bean id="appService" class="com.changhong.sso.core.app.AppServiceImpl"></bean>
+
+    <bean id="keyService" class="com.changhong.sso.core.key.KeyServiceImpl"></bean>
+
+    <bean id="credentialManager" class="com.changhong.sso.common.core.authentication.EncryCredentialManagerImpl"></bean>
+
+    <!-- 默认的用户登录状态存储器服务-->
+    <bean id="userLoggedStatusStore"
+          class="com.changhong.sso.core.authentication.status.DefaultUserLoggedStatusStore"></bean>
+
+    <!--认证管理器类-->
+    <bean id="authenticationManager" class="com.changhong.sso.core.authentication.AuthenicationManagerImpl">
+        <property name="authenticationHandlers">
+            <list>
+                <bean class="com.changhong.sso.core.authentication.handlers.EncryCredentialAuthenticaionHandler"/>
+                <bean class="com.changhong.sso.core.authentication.handlers.UsernamePasswordAuthenticationHandler"
+                      autowire="byName"/>
+            </list>
+        </property>
+
+        <property name="credentialToPrincipalResolvers">
+            <list>
+                <bean class="com.changhong.sso.core.authentication.resolvers.UsernamePasswordCredentialToPrincipalResolver"/>
+                <bean class="com.changhong.sso.core.authentication.resolvers.EncryCredentialToPrincipalResolver" autowire="byName"/>
+            </list>
+        </property>
+
+        <property name="authenticationPostHandler">
+            <bean class="com.changhong.sso.core.authentication.DefaultAuthenticationPostHandler"/>
+        </property>
+    </bean>
+</beans>

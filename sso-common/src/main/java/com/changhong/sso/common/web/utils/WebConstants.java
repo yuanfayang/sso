@@ -16,7 +16,7 @@ public interface WebConstants {
     /**
      * SSO客户端应用服务器写入到web客户端cookie中的认证加密后的凭证的键值
      */
-    public static final String SSO_CLIENT_COOKIE_KEY="SSO_SERVER_EC";
+    public static final String SSO_CLIENT_COOKIE_KEY="SSO_CLIENT_EC";
 
     /**
      * 目的服务地址service的参数名
