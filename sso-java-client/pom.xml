@@ -9,11 +9,15 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <packaging>jar</packaging>
-    <description>SSO 核心业务包</description>
-    <artifactId>sso-core</artifactId>
-
+    <description>java应用服务端需要的代码</description>
+    <artifactId>sso-java-client</artifactId>
     <dependencies>
         <!--modules dependencies begin-->
+        <dependency>
+            <groupId>com.changhong.sso</groupId>
+            <artifactId>sso-core</artifactId>
+            <version>${parent.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.changhong.sso</groupId>
             <artifactId>sso-common</artifactId>
@@ -25,10 +29,28 @@
             <version>${parent.version}</version>
         </dependency>
         <!--modules dependencies end-->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.5</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpasyncclient</artifactId>
+            <version>4.0.2</version>
+        </dependency>
 
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.3.5</version>
+        </dependency>
     </dependencies>
 
     <build>
-        <finalName>sso-core</finalName>
+        <finalName>sso-java-client</finalName>
     </build>
+
+
 </project>

@@ -9,6 +9,7 @@
         <module>sso-common</module>
         <module>sso-core</module>
         <module>sso-exception</module>
+        <module>sso-java-client</module>
     </modules>
     <groupId>com.changhong.sso</groupId>
     <artifactId>sso-parent</artifactId>
