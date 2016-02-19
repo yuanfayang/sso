@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+       default-autowire="byName">
 
     <!--组合凭证解析器-->
     <bean id="credentialResolver" class="com.changhong.sso.api.resolver.CompositeCredentialResolver">
@@ -16,13 +17,14 @@
     <!--SSO 核心接口服务-->
     <bean id="ssoService" class="com.changhong.sso.core.service.SSOServiceImpl" autowire="byName"></bean>
 
-    <bean id="loginResultToView" class="com.changhong.sso.api.result.DefaultLoginResultToView"></bean>
+    <bean id="loginResultToView" class="com.changhong.sso.api.result.DefaultLoginResultToView" autowire="byName"></bean>
 
-    <bean id="appService" class="com.changhong.sso.core.app.AppServiceImpl"></bean>
+    <bean id="appService" class="com.changhong.sso.core.app.AppServiceImpl" autowire="byName"></bean>
 
-    <bean id="keyService" class="com.changhong.sso.core.key.KeyServiceImpl"></bean>
+    <bean id="keyService" class="com.changhong.sso.core.key.KeyServiceImpl" autowire="byName"></bean>
 
-    <bean id="credentialManager" class="com.changhong.sso.common.core.authentication.EncryCredentialManagerImpl"></bean>
+    <bean id="encryCredentialManager" class="com.changhong.sso.common.core.authentication.EncryCredentialManagerImpl"
+          autowire="byName"></bean>
 
     <!-- 默认的用户登录状态存储器服务-->
     <bean id="userLoggedStatusStore"
@@ -41,7 +43,8 @@
         <property name="credentialToPrincipalResolvers">
             <list>
                 <bean class="com.changhong.sso.core.authentication.resolvers.UsernamePasswordCredentialToPrincipalResolver"/>
-                <bean class="com.changhong.sso.core.authentication.resolvers.EncryCredentialToPrincipalResolver" autowire="byName"/>
+                <bean class="com.changhong.sso.core.authentication.resolvers.EncryCredentialToPrincipalResolver"
+                      autowire="byName"/>
             </list>
         </property>
 

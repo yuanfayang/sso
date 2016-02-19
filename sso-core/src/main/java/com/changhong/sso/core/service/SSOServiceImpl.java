@@ -59,20 +59,15 @@ public class SSOServiceImpl implements SSOService {
     }
 
     @Override
-    public void logout(Credential credential) {
+    public void logout(Credential credential) throws InvalidCrendentialException {
         if (credential == null) {
             return;
         }
-        try {
-            //对凭证进行一次认证
-            Authentication authentication = authenticationManager.authenticat(credential);
-            //清除用户登录记录
-            if (authentication != null && authentication.getPrincipal() != null) {
-                this.userLoggedStatusStore.clearUpUserLoggedStatus(authentication.getPrincipal().getId());
-            }
-        } catch (InvalidCrendentialException e) {
-            e.printStackTrace();
-            logger.info("{}:SSO登出异常：{}", credential, e);
+        //对凭证进行一次认证
+        Authentication authentication = authenticationManager.authenticat(credential);
+        //清除用户登录记录
+        if (authentication != null && authentication.getPrincipal() != null) {
+            this.userLoggedStatusStore.clearUpUserLoggedStatus(authentication.getPrincipal().getId());
         }
     }
 

@@ -14,6 +14,7 @@ import com.changhong.sso.core.authentication.status.UserLoggedStatusStore;
 import com.changhong.sso.exception.NoSSOKeyException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -50,6 +51,8 @@ public class DefaultAuthenticationPostHandler implements AuthenticationPostHandl
         AuthenticationImpl authentication = new AuthenticationImpl();
         authentication.setAuthenticationDate(createTime);
         authentication.setPrincipal(principal);
+        encryCredentialWithSSOKey(authentication,credential,principal);
+        encryCredentialWithAppKey(authentication,credential,principal);
         return authentication;
     }
 

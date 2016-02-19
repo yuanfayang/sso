@@ -6,7 +6,6 @@ import com.changhong.sso.common.core.authentication.Credential;
 import com.changhong.sso.common.web.utils.WebConstants;
 import com.changhong.sso.core.service.LoginResult;
 import com.changhong.sso.core.service.SSOService;
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +38,12 @@ public class LoginController {
     @Autowired
     private LoginResultToView loginResultToView;
 
+    /**
+     * SSO统一登录方法
+     * @param request
+     * @param response
+     * @return
+     */
     @RequestMapping("/login")
     public ModelAndView login(HttpServletRequest request,
                               HttpServletResponse response) {

@@ -16,9 +16,11 @@ public class InvalidCrendentialException extends AuthenticationException impleme
 
     private static final String code = ExceptionConstants.INVALID_CREDENTIAL_CODE;
     private static final String msgKey = ExceptionConstants.INVALID_CREDENTIAL_MSGKEY;
-    public InvalidCrendentialException(String code,String msgKey ) {
+
+    public InvalidCrendentialException(String code, String msgKey) {
         super(code, msgKey);
     }
+
     InvalidCrendentialException() {
         super(code, msgKey);
     }
