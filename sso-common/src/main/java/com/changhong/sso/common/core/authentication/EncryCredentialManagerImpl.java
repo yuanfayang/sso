@@ -72,6 +72,8 @@ public class EncryCredentialManagerImpl implements EncryCredentialManager {
                         .append("&keyId=")
                         .append(encryCredentialInfo.getKeyId());
                 //先进行Base64编码，再进行URL编码，避免传输错误
+                logger.info("明文ticket:"+stringBuffer.toString());
+                logger.info("ticket:"+URLEncoder.encode(Base64Coder.encryptBASE64(stringBuffer.toString().getBytes()), ENCODE));
                 return URLEncoder.encode(Base64Coder.encryptBASE64(stringBuffer.toString().getBytes()), ENCODE);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -102,12 +104,13 @@ public class EncryCredentialManagerImpl implements EncryCredentialManager {
     }
 
     private EncryCredentialInfo parseEncryCredential(String credential) throws InvalidEncryededentialException {
+        logger.info("tickec:"+credential.toString());
         EncryCredentialInfo encryCredentialInfo = new EncryCredentialInfo();
         try {
             //先进行URL解码
             credential = URLDecoder.decode(credential, ENCODE);
             //再进行BASE64解码
-            credential = Base64Coder.decryptBASE64(credential).toString();
+            credential = new String(Base64Coder.decryptBASE64(credential));
 
             //问号分割字符串
             String[] items = credential.split("\\?");
@@ -169,7 +172,7 @@ public class EncryCredentialManagerImpl implements EncryCredentialManager {
             logger.log(Level.SEVERE, "parse encry credential exception:" + e);
             throw InvalidEncryededentialException.INSTANCE;
         }
-        return null;
+        return encryCredentialInfo;
     }
 
     /**

@@ -47,8 +47,6 @@ public class LoginController {
     @RequestMapping("/login")
     public ModelAndView login(HttpServletRequest request,
                               HttpServletResponse response) {
-
-        logger.info("username:{}",request.getParameter("username"));
         ModelAndView mv = new ModelAndView("login");
         //解析用户凭据。
         Credential credential = credentialResolver.resolveCredential(request);
@@ -65,7 +63,7 @@ public class LoginController {
             //提供了用户凭据
             //调用核心结果进行凭证认证
             LoginResult result = ssoService.login(credential);
-            logger.info("{}:SSO登录结果：{}",result.getAuthentication().getPrincipal().getId(), result.isSuccess());
+//            logger.info("{}:SSO登录结果：{}",result.getAuthentication().getPrincipal().getId(), result.isSuccess());
             //将验证结果转换为视图输出结果。
             mv = loginResultToView.loginResultToView(mv, result, request, response);
         }
