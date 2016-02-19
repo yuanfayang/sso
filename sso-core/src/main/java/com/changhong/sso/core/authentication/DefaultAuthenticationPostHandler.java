@@ -50,7 +50,7 @@ public class DefaultAuthenticationPostHandler implements AuthenticationPostHandl
         AuthenticationImpl authentication = new AuthenticationImpl();
         authentication.setAuthenticationDate(createTime);
         authentication.setPrincipal(principal);
-        return null;
+        return authentication;
     }
 
     /**

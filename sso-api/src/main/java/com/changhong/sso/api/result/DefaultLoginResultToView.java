@@ -80,7 +80,7 @@ public class DefaultLoginResultToView implements LoginResultToView {
             mv.getModel().put("code", result.getCode());
             mv.getModel().put("msg", result.getMsgKey());
         }
-        return null;
+        return mv;
     }
 
     /**

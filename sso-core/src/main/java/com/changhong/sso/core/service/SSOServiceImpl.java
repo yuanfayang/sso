@@ -55,8 +55,7 @@ public class SSOServiceImpl implements SSOService {
             loginResult.setMsgKey(e.getMsgKey());
         }
 
-        logger.info("{}:SSO登录结果：{}", credential, loginResult);
-        return null;
+        return loginResult;
     }
 
     @Override

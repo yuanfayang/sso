@@ -6,6 +6,7 @@ import com.changhong.sso.common.core.authentication.Credential;
 import com.changhong.sso.common.web.utils.WebConstants;
 import com.changhong.sso.core.service.LoginResult;
 import com.changhong.sso.core.service.SSOService;
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,6 +60,7 @@ public class LoginController {
             //提供了用户凭据
             //调用核心结果进行凭证认证
             LoginResult result = ssoService.login(credential);
+            logger.info("{}:SSO登录结果：{}",result.getAuthentication().getPrincipal().getId(), result.isSuccess());
             //将验证结果转换为视图输出结果。
             mv = loginResultToView.loginResultToView(mv, result, request, response);
         }
