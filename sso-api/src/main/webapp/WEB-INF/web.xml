@@ -10,6 +10,16 @@
         本项目是sso的web工程，提供了对外的http接口。
     </description>
 
+    <!--允许跨域调用的过滤器配置-->
+    <filter>
+        <filter-name>crossdomainFilter</filter-name>
+        <filter-class>com.changhong.sso.api.web.filter.CrossdomainFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>crossdomainFilter</filter-name>
+        <url-pattern>/sso/*</url-pattern>
+    </filter-mapping>
+
     <servlet>
         <servlet-name>DispatcherServlet</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -23,5 +33,4 @@
         <servlet-name>DispatcherServlet</servlet-name>
         <url-pattern>/sso/*</url-pattern>
     </servlet-mapping>
-
 </web-app>
