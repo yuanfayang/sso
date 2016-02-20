@@ -15,8 +15,7 @@ public class SessionStorage {
 	/**
 	 * 以sessionId为key，session为value。在统一退出的时候获取并销毁session
 	 */
-	private static final Map<String, HttpSession> SESSION_MAP 
-		= new HashMap<String, HttpSession>();
+	private static final Map<String, HttpSession> SESSION_MAP = new HashMap<String, HttpSession>();
 
 	/**
 	 * 保存session信息

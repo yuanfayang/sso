@@ -1,5 +1,7 @@
 package com.changhong.sso.core.authentication;
 
+import com.changhong.sso.common.core.entity.App;
+
 import java.util.Date;
 import java.util.Map;
 
@@ -26,6 +28,11 @@ public class AuthenticationImpl implements Authentication {
      */
     private Principal principal;
 
+    /**
+     * 授权应用
+     */
+    private App app;
+
 
     @Override
     public Map<String, Object> getAttributes() {
@@ -40,6 +47,11 @@ public class AuthenticationImpl implements Authentication {
     @Override
     public Principal getPrincipal() {
         return this.principal;
+    }
+
+    @Override
+    public App getApp() {
+        return this.app;
     }
 
     public void setAuthenticationDate(Date authenticationDate) {

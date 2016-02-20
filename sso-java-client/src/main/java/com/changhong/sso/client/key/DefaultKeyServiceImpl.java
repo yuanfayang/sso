@@ -32,8 +32,7 @@ import java.util.logging.Logger;
 @SuppressWarnings("deprecation")
 public class DefaultKeyServiceImpl implements KeyService {
 
-	private static Logger logger = Logger.getLogger(DefaultKeyServiceImpl.class
-			.getName());
+	private static Logger logger = Logger.getLogger(DefaultKeyServiceImpl.class.getName());
 
 	private String ssoServerFetchKeyUrl;
 	 /** 指定私钥存放文件 ，默认是classPath*/

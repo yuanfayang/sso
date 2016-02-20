@@ -55,7 +55,7 @@ public class DefaultLoginResultToView implements LoginResultToView {
                     mv.setView(
                             buildRedirectView(
                                     attributes.get(WebConstants.SERVICE_PARAM_NAME).toString(),
-                                    attributes.get(WebConstants.SSO_CLIENT_COOKIE_KEY).toString()
+                                    attributes.get(AuthenticationPostHandler.SSO_CLIENT_EC_KEY).toString()
                             )
                     );
                     return mv;

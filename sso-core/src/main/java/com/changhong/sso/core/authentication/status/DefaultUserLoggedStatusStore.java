@@ -41,7 +41,7 @@ public class DefaultUserLoggedStatusStore implements UserLoggedStatusStore {
 
             this.userLoggedStatusSet.add(userLoggedStatus);
             List<UserLoggedStatus> userLoggedStatusList = this.userIndexMap.get(userLoggedStatus.getUserId());
-            if (userLoggedStatus == null) {
+            if (userLoggedStatusList == null) {
                 userLoggedStatusList = new ArrayList<>();
                 this.userIndexMap.put(userLoggedStatus.getUserId(), userLoggedStatusList);
             }

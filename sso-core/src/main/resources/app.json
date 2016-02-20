@@ -9,7 +9,7 @@
   {
     "appId":"1001",
     "appName":"SSO-app",
-    "host":"http://localhost:8080/sso-app",
-    "logoutUrl":"http://localhost:8080/sso-app/logout"
+    "host":"http://localhost:8080/app",
+    "logoutUrl":"http://localhost:8080/app/logout"
   }
 ]

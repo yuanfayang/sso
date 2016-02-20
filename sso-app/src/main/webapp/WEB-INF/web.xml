@@ -1,0 +1,66 @@
+<!DOCTYPE web-app PUBLIC
+        "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+        "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+	http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+    <display-name>sso-app</display-name>
+    <description>sso应用服务示例工程</description>
+
+    <!-- 配置Spring MVC -->
+    <servlet>
+        <servlet-name>springmvc</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:spring/*.xml</param-value>
+        </init-param>
+        <load-on-startup>0</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>springmvc</servlet-name>
+        <url-pattern>/sso-app/*</url-pattern>
+    </servlet-mapping>
+
+    <filter>
+        <filter-name>ssoClientFilter</filter-name>
+        <filter-class>com.changhong.sso.client.filters.SSOClientFilter</filter-class>
+        <init-param>
+            <description>SSO服务器主机地址</description>
+            <param-name>ssoServerHost</param-name>
+            <param-value>http://localhost:8080/</param-value>
+        </init-param>
+        <init-param>
+            <description>SSO服务登录地址</description>
+            <param-name>ssoLoginURL</param-name>
+            <param-value>http://localhost:8080/sso/login</param-value>
+        </init-param>
+        <init-param>
+            <description>SSO获取秘钥的地址</description>
+            <param-name>ssoFetchKeyURL</param-name>
+            <param-value>http://localhost:8080/sso/fetchKey</param-value>
+        </init-param>
+        <init-param>
+            <description>本应用在SSO中的ID</description>
+            <param-name>ssoClientAppId</param-name>
+            <param-value>1001</param-value>
+        </init-param>
+        <init-param>
+            <description>本应用的登录处理器</description>
+            <param-name>appClintLoginHandlerClass</param-name>
+            <param-value>com.changhong.sso.app.common.SSOAppClientLoginHandlerImpl</param-value>
+        </init-param>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>ssoClientFilter</filter-name>
+        <url-pattern>/sso-app/*</url-pattern>
+    </filter-mapping>
+    
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+</web-app>
