@@ -29,7 +29,7 @@ public interface SSOService {
      *
      * @param credential 用户凭证
      */
-    void logout(Credential credential) throws InvalidCrendentialException;
+    void logout(Credential credential,String service) throws InvalidCrendentialException;
 
     /**
      * 获取某个用户凭证登录的应用列表

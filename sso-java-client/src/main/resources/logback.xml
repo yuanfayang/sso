@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- For assistance related to logback-translator or configuration  -->
+<!-- files in general, please contact the logback user mailing list -->
+<!-- at http://www.qos.ch/mailman/listinfo/logback-user             -->
+<!--                                                                -->
+<!-- For professional support please see                            -->
+<!--    http://www.qos.ch/shop/products/professionalSupport         -->
+<!--                                                                -->
+<configuration>
+	<appender name="A5" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
+		<DatePattern>'_'yyyy-MM-dd'.log'</DatePattern>
+		<File>/data/logs/app/sqlExecute.log</File>
+		<Encoding>UTF-8</Encoding>
+		<encoder>
+			<pattern>[sso:client] %d{yyyy-MM-dd HH:mm:ss} [%t:%r] - [%p] %m%n</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>DRUID</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<maxIndex>5</maxIndex>
+			<FileNamePattern>/data/logs/app/sqlExecute.log.%i</FileNamePattern>
+		</rollingPolicy>
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>50MB</MaxFileSize>
+		</triggeringPolicy>
+	</appender>
+	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+		<Target>System.out</Target>
+		<encoder>
+			<pattern>[sso:client] %d{yyyy-MM-dd HH:mm:ss} %5p %c{1}:%L - %m%n</pattern>
+		</encoder>
+	</appender>
+	<appender name="D" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!--See http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
+		<!--and http://logback.qos.ch/manual/appenders.html#TimeBasedRollingPolicy-->
+		<!--for further documentation-->
+		<Append>true</Append>
+		<File>/data/logs/app/app.log</File>
+		<encoder>
+			<pattern>[sso:client] %d{yyyy-MM-dd HH:mm:ss} [%t:%r] - [%p] %m%n</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+	</appender>
+	<appender name="E" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!--See http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
+		<!--and http://logback.qos.ch/manual/appenders.html#TimeBasedRollingPolicy-->
+		<!--for further documentation-->
+		<Append>true</Append>
+		<File>/data/logs/app/app-error.log</File>
+		<encoder>
+			<pattern>[sso:client] %d{yyyy-MM-dd HH:mm:ss} [%t:%r] - [%p] %m%n</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>ERROR</level>
+		</filter>
+	</appender>
+	<logger name="sqlLogger" additivity="false" level="DEBUG">
+		<appender-ref ref="A5"/>
+	</logger>
+	<root level="debug">
+		<appender-ref ref="stdout"/>
+		<appender-ref ref="D"/>
+		<appender-ref ref="E"/>
+	</root>
+</configuration>

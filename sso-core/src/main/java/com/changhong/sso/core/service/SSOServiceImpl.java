@@ -30,6 +30,8 @@ public class SSOServiceImpl implements SSOService {
 
     private AppService appService;
 
+    private LogoutAppService logoutAppService;
+
     @Override
     public LoginResult login(Credential credential) {
         //没用用户凭证，返回空
@@ -61,12 +63,16 @@ public class SSOServiceImpl implements SSOService {
     }
 
     @Override
-    public void logout(Credential credential) throws InvalidCrendentialException {
+    public void logout(Credential credential,String service) throws InvalidCrendentialException {
         if (credential == null) {
             return;
         }
         //对凭证进行一次认证
         Authentication authentication = authenticationManager.authenticat(credential);
+
+        //登出所有的应用。
+        logoutAppService.logoutApp(authentication.getPrincipal().getId(), service);
+
         //清除用户登录记录
         if (authentication != null && authentication.getPrincipal() != null) {
             this.userLoggedStatusStore.clearUpUserLoggedStatus(authentication.getPrincipal().getId());
@@ -111,5 +117,9 @@ public class SSOServiceImpl implements SSOService {
 
     public void setAppService(AppService appService) {
         this.appService = appService;
+    }
+
+    public void setLogoutAppService(LogoutAppService logoutAppService) {
+        this.logoutAppService = logoutAppService;
     }
 }

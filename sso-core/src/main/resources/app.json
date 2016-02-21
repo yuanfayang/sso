@@ -2,14 +2,14 @@
   {
     "appId":"1",
     "appName":"SSO",
-    "host":"http://www.sso.newb.com",
-    "logoutUrl":"http://www.t.tt",
+    "host":"http://localhost:8080/sso",
+    "logoutUrl":"http://localhost:8080/sso/logout",
     "isSSOServer":true
   },
   {
     "appId":"1001",
     "appName":"SSO-app",
     "host":"http://localhost:8080/app",
-    "logoutUrl":"http://localhost:8080/app/logout"
+    "logoutUrl":"http://localhost:8080/app/sso-app/logout"
   }
 ]

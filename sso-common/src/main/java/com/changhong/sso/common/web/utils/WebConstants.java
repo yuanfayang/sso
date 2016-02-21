@@ -9,23 +9,32 @@ package com.changhong.sso.common.web.utils;
  */
 public interface WebConstants {
     /**
+     * 用户信息在客户端应用中session中的用户信息，主要用户客户端应用服务记录登录状态
+     */
+    public static final String USER_STAT_IN_SESSION_KEY = "sso_user_info_key";
+    /**
      * SSO中心认证服务器写入到用户web客户端cookie中的加密平局的键值
      */
-    public static final String SSO_SERVER_EC_COOKIE_KEY="SSO_SERVER_EC";
+    public static final String SSO_SERVER_EC_COOKIE_KEY = "SSO_SERVER_EC";
 
     /**
      * SSO客户端应用服务器写入到web客户端cookie中的认证加密后的凭证的键值
      */
-    public static final String SSO_CLIENT_COOKIE_KEY="SSO_CLIENT_EC";
+    public static final String SSO_CLIENT_COOKIE_KEY = "SSO_CLIENT_EC";
 
     /**
      * 目的服务地址service的参数名
      */
-    public static final String SERVICE_PARAM_NAME="service";
+    public static final String SERVICE_PARAM_NAME = "service";
 
     /**
      * 目的服务器地址存储在SESSION中的key值
      */
-    public static final String SSO_SERVICE_KEY_IN_SESSION="SSO_SERVICE_KEY";
+    public static final String SSO_SERVICE_KEY_IN_SESSION = "SSO_SERVICE_KEY";
+
+    /**
+     * 用户标识的参数名。
+     */
+    public static final String USER_ID_PARAM_NAME = "userId";
 
 }

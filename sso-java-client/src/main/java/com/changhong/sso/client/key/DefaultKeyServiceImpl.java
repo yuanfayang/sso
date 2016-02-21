@@ -78,7 +78,7 @@ public class DefaultKeyServiceImpl implements KeyService {
 
 	private SSOKey fetchKeyFromSSOServer() {
 		HttpPost httpPost = null;
-		SSOKey ki4so = null;
+		SSOKey ssoKey = null;
 		try {
 			httpPost = new HttpPost(ssoServerFetchKeyUrl);
 			List<NameValuePair> nvps = new ArrayList<NameValuePair>();
@@ -89,8 +89,8 @@ public class DefaultKeyServiceImpl implements KeyService {
 				HttpEntity entity = response.getEntity();
 				String content = EntityUtils.toString(entity);
 				EntityUtils.consume(entity);
-				ki4so = JSON.parseObject(content, SSOKey.class);
-				return ki4so;
+				ssoKey = JSON.parseObject(content, SSOKey.class);
+				return ssoKey;
 			}
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, "fetch SSO key from server error, the url is ["+ssoServerFetchKeyUrl+"]", e);
@@ -150,8 +150,7 @@ public class DefaultKeyServiceImpl implements KeyService {
         ObjectInputStream ois = null;
         try {
             /** 将文件中的私钥对象读出 */
-            ois = new ObjectInputStream(new FileInputStream(
-                    PRIVATE_KEY_FILE));
+            ois = new ObjectInputStream(new FileInputStream(PRIVATE_KEY_FILE));
             privateKey = (Key) ois.readObject();
         } catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block

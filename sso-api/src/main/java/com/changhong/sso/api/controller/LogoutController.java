@@ -16,10 +16,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
@@ -50,38 +52,23 @@ public class LogoutController {
      * 若callbackUrl为空或登出失败，SSO服务将返回json格式响应报文
      */
     @RequestMapping(value = "/logout")
-    public ModelAndView loglout(@RequestParam(value = "appId", required = true) String appId,
-                                @RequestParam(value = "callbackUrl", required = false) String callbackUrl,
+    public ModelAndView loglout(@RequestParam(value = "appId", required = false) String appId,
+                                @RequestParam(value = "service", required = false) String service,
                                 HttpServletRequest request,
-                                HttpServletResponse response) {
+                                HttpServletResponse response,
+                                HttpSession session) {
         ModelAndView modelAndView = new ModelAndView();
-        JSONObject resultJsonobj = new JSONObject();
+
+        logger.info("the service of logout is " + service);
         //解析并验证用户凭证
         Credential credential = credentialResolver.resolveCredential(request);
 
-        if (credential == null) {
-            resultJsonobj.put("code", EmptyCredentialException.INSTANCE.getCode());
-            resultJsonobj.put("msgKey", EmptyCredentialException.INSTANCE.getMsgKey());
-            try {
-                response.getWriter().println(resultJsonobj);
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-            return null;
-        }
-
         try {
-            ssoService.logout(credential);
+            //调用servie统一登出所有的应用
+            ssoService.logout(credential, service);
         } catch (InvalidCrendentialException e) {
             e.printStackTrace();
             logger.error("{}:登出异常:{}", ToStringBuilder.reflectionToString(credential), e);
-            resultJsonobj.put("code", e.getCode());
-            resultJsonobj.put("msgKey", e.getMsgKey());
-            try {
-                response.getWriter().println(resultJsonobj);
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
             return null;
         }
 
@@ -97,20 +84,14 @@ public class LogoutController {
             }
         }
 
-        resultJsonobj.put("code", "0000");
-        resultJsonobj.put("msgKey", "logout success");
-
-        //若应用服务已经给定了回调地址则转发到给定的回调地址中
-        if (!StringUtils.isEmpty(callbackUrl)) {
-            modelAndView.setViewName(callbackUrl);
-            return modelAndView;
+        if (!org.springframework.util.StringUtils.isEmpty(service)) {
+            //跳转到service对应的URL地址
+            modelAndView.setView(new RedirectView(service));
+            session.setAttribute(WebConstants.USER_STAT_IN_SESSION_KEY, null);
         } else {
-            try {
-                response.getWriter().println(resultJsonobj);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            //返回默认的登出成功页面。
+            modelAndView.setViewName("logoutSucess");
         }
-        return null;
+        return modelAndView;
     }
 }

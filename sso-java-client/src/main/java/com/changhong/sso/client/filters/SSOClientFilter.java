@@ -2,6 +2,7 @@ package com.changhong.sso.client.filters;
 
 import com.changhong.sso.client.handler.AppClientLoginHandler;
 import com.changhong.sso.client.key.DefaultKeyServiceImpl;
+import com.changhong.sso.client.session.SessionStorage;
 import com.changhong.sso.common.core.authentication.EncryCredential;
 import com.changhong.sso.common.core.authentication.EncryCredentialManagerImpl;
 import com.changhong.sso.common.core.entity.EncryCredentialInfo;
@@ -38,6 +39,10 @@ public class SSOClientFilter extends BaseClientFilter {
     public static final String USER_STAT_IN_SESSION_KEY = "sso_user_info_key";
 
     /**
+     * SSO服务登出地址在request中的键值
+     */
+    public static final String SSO_SERVER_LOGOUT_URL="sso_server_logout_url";
+    /**
      * SSO服务的登录地址
      */
     private String ssoLoginURL = ssoServerHost + "login";
@@ -46,6 +51,11 @@ public class SSOClientFilter extends BaseClientFilter {
      * 应用服务获取秘钥的URL
      */
     private String ssoFetchKeyURL = ssoServerHost + "fetchKey";
+
+    /**
+     * SSO服务器的登出URL地址
+     */
+    private String ssoServerLogoutURL = ssoServerHost + "logout";
 
     /**
      * 本应用在SSO中心服务中的id值
@@ -82,6 +92,7 @@ public class SSOClientFilter extends BaseClientFilter {
         ssoLoginURL = getInitParameterWithDefalutValue(filterConfig, "ssoLoginURL", ssoLoginURL);
         ssoFetchKeyURL = getInitParameterWithDefalutValue(filterConfig, "ssoFetchKeyURL", ssoFetchKeyURL);
         appClintLoginHandlerClass = getInitParameterWithDefalutValue(filterConfig, "appClintLoginHandlerClass", appClintLoginHandlerClass);
+        ssoServerLogoutURL=getInitParameterWithDefalutValue(filterConfig,"ssoServerLogoutURL",ssoServerLogoutURL);
         //构造本应用的登录处理器对象
         if (!StringUtils.isEmpty(appClintLoginHandlerClass)) {
             try {
@@ -106,6 +117,8 @@ public class SSOClientFilter extends BaseClientFilter {
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpSession session = httpServletRequest.getSession();
+        //将SSO的登出地址放入到request参数中
+        httpServletRequest.setAttribute(SSO_SERVER_LOGOUT_URL,ssoServerLogoutURL);
         //监测是否在本地应用登录
         //若未在本应用登录，则开始SSO登录流程
         if (session.getAttribute(USER_STAT_IN_SESSION_KEY) == null) {
@@ -155,9 +168,11 @@ public class SSOClientFilter extends BaseClientFilter {
                             }
                         }
                     }
+                    //保存用户的信息到session中
+                    SessionStorage.put(encryCredentialInfo.getUserId(),session);
 
-                    //登录成功后，写入EC到cookie中。
-                    writeEC(ssoClientEC, httpServletResponse);
+                    /*//登录成功后，写入EC到cookie中。
+                    writeEC(ssoClientEC, httpServletResponse);*/
 
                     //重新定位请求，避免尾部出现长参数。
                     httpServletResponse.sendRedirect(url);

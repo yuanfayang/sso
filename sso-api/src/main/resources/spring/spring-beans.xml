@@ -26,9 +26,12 @@
     <bean id="encryCredentialManager" class="com.changhong.sso.common.core.authentication.EncryCredentialManagerImpl"
           autowire="byName"></bean>
 
+    <!-- 登出app服务。 -->
+    <bean id="logoutAppService" class="com.changhong.sso.core.service.LogoutAppServiceImpl"/>
     <!-- 默认的用户登录状态存储器服务-->
     <bean id="userLoggedStatusStore"
           class="com.changhong.sso.core.authentication.status.DefaultUserLoggedStatusStore"></bean>
+
 
     <!--认证管理器类-->
     <bean id="authenticationManager" class="com.changhong.sso.core.authentication.AuthenicationManagerImpl">
