@@ -4,7 +4,8 @@ import com.changhong.sso.client.handler.AppClientLogoutHandler;
 import com.changhong.sso.client.session.SessionStorage;
 import com.changhong.sso.common.web.utils.WebConstants;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +22,7 @@ import java.io.PrintWriter;
  * @discription : SSO客户端应用本身登出过滤器
  */
 public class SSOClientLogoutFilter extends BaseClientFilter {
-    private static final Logger logger = Logger.getLogger(SSOClientLogoutFilter.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(SSOClientLogoutFilter.class.getName());
 
     private static final String SESSIONID_IS_NULL = "send userId is null";
 
@@ -57,7 +58,7 @@ public class SSOClientLogoutFilter extends BaseClientFilter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        HttpSession session = httpServletRequest.getSession();
+
 
         //获取用户的userId参数
         String userId = request.getParameter(WebConstants.USER_ID_PARAM_NAME);
@@ -73,8 +74,11 @@ public class SSOClientLogoutFilter extends BaseClientFilter {
             return;
         }
 
+        HttpSession session = SessionStorage.get(userId);
+        logger.info("##########################:"+session.getAttribute(SSOClientFilter.USER_STAT_IN_SESSION_KEY));
         //本地应用未登出，则进行登出处理
         if (session != null && session.getAttribute(SSOClientFilter.USER_STAT_IN_SESSION_KEY) != null) {
+
             //清除session
             if (session.getAttribute(SSOClientFilter.USER_STAT_IN_SESSION_KEY) != null) {
                 session.setAttribute(SSOClientFilter.USER_STAT_IN_SESSION_KEY, null);

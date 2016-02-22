@@ -25,6 +25,23 @@
         <url-pattern>/sso-app/*</url-pattern>
     </servlet-mapping>
 
+
+    <filter>
+        <filter-name>ssoLogoutFilter</filter-name>
+        <filter-class>com.changhong.sso.client.filters.SSOClientLogoutFilter</filter-class>
+
+        <init-param>
+            <description>登出本应用处理类</description>
+            <param-name>appClientLogoutHandlerClass</param-name>
+            <param-value>com.changhong.sso.app.common.SSOAppClientLogoutHandlerImpl</param-value>
+        </init-param>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>ssoLogoutFilter</filter-name>
+        <url-pattern>/logout</url-pattern>
+    </filter-mapping>
+
     <filter>
         <filter-name>ssoClientFilter</filter-name>
         <filter-class>com.changhong.sso.client.filters.SSOClientFilter</filter-class>
@@ -62,22 +79,6 @@
     <filter-mapping>
         <filter-name>ssoClientFilter</filter-name>
         <url-pattern>/sso-app/*</url-pattern>
-    </filter-mapping>
-
-    <filter>
-        <filter-name>ssoLogoutFilter</filter-name>
-        <filter-class>com.changhong.sso.client.filters.SSOClientLogoutFilter</filter-class>
-
-        <init-param>
-            <description>登出本应用处理类</description>
-            <param-name>appClientLogoutHandlerClass</param-name>
-            <param-value>com.changhong.sso.app.common.SSOAppClientLogoutHandlerImpl</param-value>
-        </init-param>
-    </filter>
-
-    <filter-mapping>
-        <filter-name>ssoLogoutFilter</filter-name>
-        <url-pattern>/sso-app/logout</url-pattern>
     </filter-mapping>
 
     <welcome-file-list>
