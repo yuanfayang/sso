@@ -18,16 +18,19 @@
             <groupId>com.changhong.sso</groupId>
             <artifactId>sso-core</artifactId>
             <version>${parent.version}</version>
+            <type>pom</type>
         </dependency>
         <dependency>
             <groupId>com.changhong.sso</groupId>
             <artifactId>sso-common</artifactId>
             <version>${parent.version}</version>
+            <type>pom</type>
         </dependency>
         <dependency>
             <groupId>com.changhong.sso</groupId>
             <artifactId>sso-exception</artifactId>
             <version>${parent.version}</version>
+            <type>pom</type>
         </dependency>
         <!--modules dependencies end-->
 

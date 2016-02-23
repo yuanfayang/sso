@@ -16,7 +16,7 @@
 </p>
 
 <p>
-<a href="${sso_server_logout_url}?service=http://localhost:8080/app/">统一注销</a>
+<a href="${sso_server_logout_url}?service=http://111.9.116.181:20161/app1/">统一注销</a>
 </p>
 </body>
 </html>

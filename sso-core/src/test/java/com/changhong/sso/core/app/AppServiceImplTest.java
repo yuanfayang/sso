@@ -22,7 +22,7 @@ public class AppServiceImplTest extends TestCase {
     public void testFinAppById() throws Exception {
         App app =appService.finAppById("1");
 
-        logger.info("app"+app.toString());
+        logger.info("app"+app);
     }
 
     @Test
@@ -36,7 +36,7 @@ public class AppServiceImplTest extends TestCase {
     public void testFindAppByHost() throws Exception {
         App app =appService.findAppByHost("http://www.sso.newb.com");
 
-        logger.info("app"+app.toString());
+        logger.info("app"+app);
     }
 
     @Test

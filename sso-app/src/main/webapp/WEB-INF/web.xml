@@ -48,17 +48,17 @@
         <init-param>
             <description>SSO服务器主机地址</description>
             <param-name>ssoServerHost</param-name>
-            <param-value>http://localhost:8080/sso/</param-value>
+            <param-value>http://111.9.116.181:20160/sso/</param-value>
         </init-param>
         <init-param>
             <description>SSO服务登录地址</description>
             <param-name>ssoLoginURL</param-name>
-            <param-value>http://localhost:8080/sso/api/login</param-value>
+            <param-value>http://111.9.116.181:20160/sso/api/login</param-value>
         </init-param>
         <init-param>
             <description>SSO获取秘钥的地址</description>
             <param-name>ssoFetchKeyURL</param-name>
-            <param-value>http://localhost:8080/sso/api/fetchKey</param-value>
+            <param-value>http://111.9.116.181:20160/sso/api/fetchKey</param-value>
         </init-param>
         <init-param>
             <description>本应用在SSO中的ID</description>
@@ -67,7 +67,7 @@
         </init-param>
         <init-param>
             <param-name>ssoServerLogoutURL</param-name>
-            <param-value>http://localhost:8080/sso/api/logout</param-value>
+            <param-value>http://111.9.116.181:20160/sso/api/logout</param-value>
         </init-param>
         <init-param>
             <description>本应用的登录处理器</description>
