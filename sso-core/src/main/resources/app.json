@@ -2,20 +2,20 @@
   {
     "appId":"1",
     "appName":"SSO",
-    "host":"http://localhost:8080/sso",
-    "logoutUrl":"http://localhost:8080/sso/logout",
+    "host":"http://127.0.0.1:8080/sso",
+    "logoutUrl":"http://127.0.0.1:8080/sso/logout",
     "isSSOServer":true
   },
   {
     "appId":"1001",
     "appName":"SSO-app1",
-    "host":"http://localhost:8080/app1",
-    "logoutUrl":"http://localhost:8080/app1/logout"
+    "host":"http://127.0.0.1:8081/app1",
+    "logoutUrl":"http://127.0.0.1:8081/app1/logout"
   },
   {
     "appId":"1002",
     "appName":"SSO-app2",
-    "host":"http://localhost:8080/app2",
-    "logoutUrl":"http://localhost:8080/app2/logout"
+    "host":"http://127.0.0.1:8082/app2",
+    "logoutUrl":"http://127.0.0.1:8082/app2/logout"
   }
 ]

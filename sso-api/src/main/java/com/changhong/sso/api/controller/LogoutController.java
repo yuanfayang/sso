@@ -4,11 +4,8 @@ import com.changhong.sso.api.resolver.CredentialResolver;
 import com.changhong.sso.common.core.authentication.Credential;
 import com.changhong.sso.common.web.utils.WebConstants;
 import com.changhong.sso.core.service.SSOService;
-import com.changhong.sso.exception.EmptyCredentialException;
 import com.changhong.sso.exception.InvalidCrendentialException;
-import net.sf.json.JSONObject;
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +19,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 
 /**
  * @author ：Yuan Fayang
@@ -44,10 +40,10 @@ public class LogoutController {
     /**
      * ＳＳＯ统一登出方法
      *
-     * @param appId       　SSO应用服务的唯一标识
-     * @param callbackUrl 登出之后的回调地址
-     * @param request     http请求
-     * @param response    http响应
+     * @param appId    　SSO应用服务的唯一标识
+     * @param service  登出之后的回调地址
+     * @param request  http请求
+     * @param response http响应
      * @return 登出成功后，若callbackUrl不为空，则SSO服务默认将请求转发到此地址，
      * 若callbackUrl为空或登出失败，SSO服务将返回json格式响应报文
      */
