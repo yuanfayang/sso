@@ -45,17 +45,17 @@ public class SSOClientFilter extends BaseClientFilter {
     /**
      * SSO服务的登录地址
      */
-    private String ssoLoginURL = ssoServerHost + "login";
+    private String ssoLoginURL = ssoServerHost + "api/login";
 
     /**
      * 应用服务获取秘钥的URL
      */
-    private String ssoFetchKeyURL = ssoServerHost + "fetchKey";
+    private String ssoFetchKeyURL = ssoServerHost + "api/fetchKey";
 
     /**
      * SSO服务器的登出URL地址
      */
-    private String ssoServerLogoutURL = ssoServerHost + "logout";
+    private String ssoServerLogoutURL = ssoServerHost + "api/logout";
 
     /**
      * 本应用在SSO中心服务中的id值

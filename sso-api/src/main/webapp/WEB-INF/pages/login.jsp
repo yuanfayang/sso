@@ -11,7 +11,7 @@
 <body>
 <p>这是sso默认的登录界面，请替换为自己的页面 </p>
 <p style="color: red;">默认的demo示例是若用户名和密码完全相同则登录成功，比如用户名是test,密码是test则能够登录成功。</p>
-<form action="${ctx}/sso/login" method="post">
+<form action="${ctx}/api/login" method="post">
 <fieldset>
 	<legend>登录</legend>
 	<label>用户名：<input type="text" name="username" value="<%=request.getParameter("username")==null?"":request.getParameter("username")%>"/></label><br/>

@@ -16,7 +16,7 @@
 	这是默认的登出成功页面
 </p>
 <p>
-<a href="${ctx}/sso/login">返回再次登录</a>
+<a href="${ctx}/api/login">返回再次登录</a>
 </p>
 </body>
 </html>

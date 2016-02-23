@@ -63,7 +63,7 @@
         <init-param>
             <description>本应用在SSO中的ID</description>
             <param-name>ssoClientAppId</param-name>
-            <param-value>1001</param-value>
+            <param-value>1002</param-value>
         </init-param>
         <init-param>
             <param-name>ssoServerLogoutURL</param-name>

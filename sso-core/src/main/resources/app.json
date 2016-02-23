@@ -8,8 +8,14 @@
   },
   {
     "appId":"1001",
-    "appName":"SSO-app",
-    "host":"http://localhost:8080/app",
-    "logoutUrl":"http://localhost:8080/app/logout"
+    "appName":"SSO-app1",
+    "host":"http://localhost:8080/app1",
+    "logoutUrl":"http://localhost:8080/app1/logout"
+  },
+  {
+    "appId":"1002",
+    "appName":"SSO-app2",
+    "host":"http://localhost:8080/app2",
+    "logoutUrl":"http://localhost:8080/app2/logout"
   }
 ]

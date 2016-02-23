@@ -11,6 +11,7 @@
         <module>sso-exception</module>
         <module>sso-java-client</module>
         <module>sso-app</module>
+        <module>sso-app2</module>
     </modules>
     <groupId>com.changhong.sso</groupId>
     <artifactId>sso-parent</artifactId>

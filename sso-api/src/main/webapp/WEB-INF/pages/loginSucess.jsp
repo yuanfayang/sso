@@ -20,8 +20,8 @@
 </p>
 
 <p>
-    <a href="${ctx}/sso/logout?appId=0">统一注销</a>&nbsp;&nbsp;&nbsp;
-    <a href="${ctx}/sso/login">返回登录</a>
+    <a href="${ctx}/api/logout?appId=0">统一注销</a>&nbsp;&nbsp;&nbsp;
+    <a href="${ctx}/api/login">返回登录</a>
 </p>
 </body>
 </html>
