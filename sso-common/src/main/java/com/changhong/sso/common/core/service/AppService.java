@@ -1,4 +1,4 @@
-package com.changhong.sso.core.app;
+package com.changhong.sso.common.core.service;
 
 import com.changhong.sso.common.core.entity.App;
 

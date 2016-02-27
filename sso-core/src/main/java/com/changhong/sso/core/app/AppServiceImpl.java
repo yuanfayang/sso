@@ -3,8 +3,8 @@ package com.changhong.sso.core.app;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.changhong.sso.common.core.entity.App;
+import com.changhong.sso.common.core.service.AppService;
 import com.changhong.sso.core.dao.file.FileSystemDao;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.Collection;
 import java.util.HashMap;

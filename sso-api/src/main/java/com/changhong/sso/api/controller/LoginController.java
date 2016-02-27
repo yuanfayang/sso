@@ -44,7 +44,7 @@ public class LoginController {
      * @param response
      * @return
      */
-    @RequestMapping("/login")
+    @RequestMapping(value = {"/login"})
     public ModelAndView login(HttpServletRequest request,
                               HttpServletResponse response) {
         ModelAndView mv = new ModelAndView("login");
