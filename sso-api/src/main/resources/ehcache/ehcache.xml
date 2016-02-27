@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         updateCheck="true" monitoring="autodetect"
+         dynamicConfig="true" >
+    <diskStore path="java.io.tmpdir"/>
+    <!-- DefaultCache setting. -->
+    <defaultCache maxEntriesLocalHeap="10000"
+                  eternal="true"
+                  timeToIdleSeconds="300"
+                  timeToLiveSeconds="600"
+                  overflowToDisk="true"
+                  maxEntriesLocalDisk="100000"/>
+
+    <cache name="baseCache"
+           eternal="false"
+           maxElementsInMemory="500"
+           overflowToDisk="false"
+           diskPersistent="false"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="300"
+           memoryStoreEvictionPolicy="LFU" />
+</ehcache>

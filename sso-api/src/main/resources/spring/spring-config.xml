@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+                           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+                           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+                           http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
+    <context:component-scan base-package="com.changhong.sso.api.controller"/>
+    <!-- 该 BeanPostProcessor 将自动对标注 @Autowired 的 Bean 进行注入 -->
+
+    <context:annotation-config/>
+
+    <!--&lt;!&ndash;引入配置文件&ndash;&gt;
+    <bean id="placeholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath*:config/jdbc.properties</value>
+            </list>
+        </property>
+    </bean>-->
+
+    <!--mybatis 配置，扫描所有的mapper-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="mapperLocations" value="classpath:mybatis/mappers/*Mapper.xml"/>
+        <property name="configLocation" value="classpath:mybatis/mybatis.xml"/>
+    </bean>
+
+    <!--spring与mybatis整合配置,扫描所有的dao-->
+    <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+        <property name="basePackage" value="com.changhong.sso.core.dao"/>
+    </bean>
+
+    <!--对datasource数据源进行事务管理-->
+    <bean id="dataSourceTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!--事务管理 通知-->
+    <tx:advice id="txAdvice" transaction-manager="dataSourceTransactionManager">
+        <tx:attributes>
+            <!--对insert，update，delete开头的方法进行事务管理，只要有异常就回滚-->
+            <tx:method name="insert*" propagation="REQUIRED" rollback-for="java.lang.Throwable"/>
+            <tx:method name="update*" propagation="REQUIRED" rollback-for="java.lang.Throwable"/>
+            <tx:method name="delete*" propagation="REQUIRED" rollback-for="java.lang.Throwable"/>
+            <!--slelect,count开头的方法，开启只读，提高数据库访问的性能-->
+            <tx:method name="select*" read-only="true"/>
+            <tx:method name="count*" read-only="true"/>
+            <!--对其他方法，使用默认的事务管理-->
+            <tx:method name="*"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <!--事务aop配置-->
+    <aop:config>
+        <aop:pointcut id="serviceMethods" expression="execution(* com.changhong.sso.core..*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="serviceMethods"/>
+    </aop:config>
+
+    <!--配置使spring采用CGLIB代理-->
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+
+    <!--启用对事务的注解支持-->
+    <tx:annotation-driven transaction-manager="dataSourceTransactionManager"/>
+
+    <!-- Cache配置 -->
+    <bean id="ehCacheManagerFactory" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"
+          p:configLocation="classpath:ehcache/ehcache.xml"/>
+    <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager"
+          p:cacheManager-ref="ehCacheManagerFactory"/>
+    <cache:annotation-driven cache-manager="cacheManager"/>
+
+    <beans profile="development">
+        <context:property-placeholder ignore-resource-not-found="true" location="classpath*:jdbc.properties"/>
+        <!--dataSource 配置-->
+        <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+            <!--基本设置 url username password-->
+            <property name="driverClassName" value="${jdbc.drivername}"/>
+            <property name="url" value="${jdbc.url}"/>
+            <property name="username" value="${jdbc.userName}"/>
+            <property name="password" value="${jdbc.password}"/>
+
+            <!--配置初始化大小，最大，最小连接池-->
+            <property name="initialSize" value="${jdbc.pool.initialSize}"/>
+            <property name="minIdle" value="${jdbc.pool.minIdle}"/>
+            <property name="maxActive" value="${jdbc.pool.maxActive}"/>
+
+            <!--配置获取连接等待的超时时间-->
+            <property name="maxWait" value="${jdbc.pool.maxWait}"/>
+
+
+            <property name="validationQuery" value="SELECT 'x'"/>
+            <property name="testWhileIdle" value="true"/>
+            <property name="testOnBorrow" value="false"/>
+            <property name="testOnReturn" value="false"/>
+            <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+            <property name="timeBetweenConnectErrorMillis" value="${jdbc.pool.timeBetweenEvictionRunsMillis}"/>
+            <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+            <property name="minEvictableIdleTimeMillis" value="300000"/>
+
+            <!-- 打开removeAbandoned功能 -->
+            <property name="removeAbandoned" value="true"/>
+            <!-- 1800秒，也就是30分钟 -->
+            <property name="removeAbandonedTimeout" value="1800"/>
+            <!-- 关闭abanded连接时输出错误日志 -->
+            <property name="logAbandoned" value="true"/>
+
+            <property name="timeBetweenLogStatsMillis" value="300000"/>
+            <!-- 监控数据库 -->
+            <!-- <property name="filters" value="stat" /> -->
+            <property name="filters" value="stat,config,wall,slf4j,log4j"/>
+            <!--加密-->
+            <!-- <property name="connectionProperties" value="config.decrypt=true"/>-->
+            <!--<property name="filters" value="wall,stat" />-->
+            <property name="proxyFilters">
+                <list>
+                    <ref bean="logFilter"/>
+                </list>
+            </property>
+
+            <!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+            <property name="poolPreparedStatements" value="false"/>
+            <property name="maxPoolPreparedStatementPerConnectionSize"
+                      value="${jdbc.pool.maxPoolPreparedStatementPerConnectionSize}"/>
+        </bean>
+        <bean id="logFilter" class="com.alibaba.druid.filter.logging.Log4jFilter">
+            <property name="statementExecutableSqlLogEnable" value="false"/>
+
+            <property name="statementLoggerName" value="sqlLogger"/>
+            <!--<property name="resultSetLogEnabled" value="false" />-->
+        </bean>
+    </beans>
+
+    <beans profile="test">
+        <context:property-placeholder ignore-resource-not-found="true" location="classpath*:jdbc.properties"/>
+        <!--dataSource 配置-->
+        <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+            <!--基本设置 url username password-->
+            <property name="driverClassName" value="${jdbc.drivername}"/>
+            <property name="url" value="${jdbc.url}"/>
+            <property name="username" value="${jdbc.userName}"/>
+            <property name="password" value="${jdbc.password}"/>
+        </bean>
+    </beans>
+
+</beans>
