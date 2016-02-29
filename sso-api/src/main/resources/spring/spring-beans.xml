@@ -19,9 +19,9 @@
 
     <bean id="loginResultToView" class="com.changhong.sso.api.result.DefaultLoginResultToView" autowire="byName"></bean>
 
-    <bean id="appService" class="com.changhong.sso.core.app.v2.AppServiceImpl" autowire="byName"></bean>
+    <bean id="appService" class="com.changhong.sso.core.app.v2.AppServiceImpl"></bean>
 
-    <bean id="keyService" class="com.changhong.sso.core.key.v2.KeyServiceImpl" autowire="byName"></bean>
+    <bean id="keyService" class="com.changhong.sso.core.key.v2.KeyServiceImpl"></bean>
 
     <bean id="encryCredentialManager" class="com.changhong.sso.common.core.authentication.EncryCredentialManagerImpl"
           autowire="byName"></bean>

@@ -39,6 +39,17 @@
         <servlet-name>DispatcherServlet</servlet-name>
         <url-pattern>/api/*</url-pattern>
     </servlet-mapping>
+
+    <!-- 随机验证码 -->
+    <servlet>
+        <servlet-name>ValidateCodeServlet</servlet-name>
+        <servlet-class>com.changhong.sso.api.servlet.ValidateCodeServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ValidateCodeServlet</servlet-name>
+        <url-pattern>/servlet/validateCodeServlet</url-pattern>
+    </servlet-mapping>
+
     <error-page>
         <error-code>400</error-code>
         <location>/400.jsp</location>

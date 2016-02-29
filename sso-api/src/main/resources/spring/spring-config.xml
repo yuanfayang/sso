@@ -59,13 +59,13 @@
     </tx:advice>
 
     <!--事务aop配置-->
-    <aop:config>
+<!--    <aop:config>
         <aop:pointcut id="serviceMethods" expression="execution(* com.changhong.sso.core..*(..))"/>
         <aop:advisor advice-ref="txAdvice" pointcut-ref="serviceMethods"/>
-    </aop:config>
+    </aop:config>-->
 
     <!--配置使spring采用CGLIB代理-->
-    <aop:aspectj-autoproxy proxy-target-class="true"/>
+<!--    <aop:aspectj-autoproxy proxy-target-class="true"/>-->
 
     <!--启用对事务的注解支持-->
     <tx:annotation-driven transaction-manager="dataSourceTransactionManager"/>

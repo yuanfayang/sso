@@ -47,7 +47,7 @@ public class LoginController {
     @RequestMapping(value = {"/login"})
     public ModelAndView login(HttpServletRequest request,
                               HttpServletResponse response) {
-        ModelAndView mv = new ModelAndView("login");
+        ModelAndView mv = new ModelAndView("login2");
         //解析用户凭据。
         Credential credential = credentialResolver.resolveCredential(request);
         //没有提供任何认证凭据。
