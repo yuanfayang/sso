@@ -6,6 +6,7 @@ import com.changhong.sso.common.core.authentication.Credential;
 import com.changhong.sso.common.web.utils.WebConstants;
 import com.changhong.sso.core.service.LoginResult;
 import com.changhong.sso.core.service.SSOService;
+import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,10 +49,12 @@ public class LoginController {
     public ModelAndView login(HttpServletRequest request,
                               HttpServletResponse response) {
         ModelAndView mv = new ModelAndView("login2");
+        logger.info("mv:{}",mv);
         //解析用户凭据。
         Credential credential = credentialResolver.resolveCredential(request);
         //没有提供任何认证凭据。
         if (credential == null) {
+            logger.info("用户开始登录系统,登录凭据为:{}", JSONObject.fromObject(credential));
             //设置serivce地址到session中。
             String service = request.getParameter(WebConstants.SERVICE_PARAM_NAME);
             if (!StringUtils.isEmpty(service)) {
