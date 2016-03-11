@@ -174,9 +174,6 @@ public class SSOClientFilter extends BaseClientFilter {
                     //保存用户的信息到session中
                     SessionStorage.put(encryCredentialInfo.getUserId(),session);
 
-                    /*//登录成功后，写入EC到cookie中。
-                    writeEC(ssoClientEC, httpServletResponse);*/
-
                     //重新定位请求，避免尾部出现长参数。
                     httpServletResponse.sendRedirect(url);
                     return;

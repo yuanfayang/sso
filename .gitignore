@@ -125,4 +125,6 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
-
+.idea/
+data/
+*/target/
