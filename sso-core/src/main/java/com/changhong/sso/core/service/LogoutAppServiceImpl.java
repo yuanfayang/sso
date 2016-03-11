@@ -1,6 +1,7 @@
 package com.changhong.sso.core.service;
 
 import com.changhong.sso.common.core.entity.App;
+import com.changhong.sso.common.utils.ReadPropertiesUtils;
 import com.changhong.sso.common.web.utils.WebConstants;
 import com.changhong.sso.common.core.service.AppService;
 import com.changhong.sso.core.authentication.status.UserLoggedStatus;
@@ -53,9 +54,9 @@ public class LogoutAppServiceImpl implements LogoutAppService {
         //servie对应的app
         App app = null;
         //先查找service对应的应用登出地址。
-        if(!StringUtils.isEmpty(service)){
+        if (!StringUtils.isEmpty(service)) {
             app = appService.findAppByHost(service);
-            if(app!=null){
+            if (app != null) {
                 String logoutUrl = app.getLogoutUrl();
                 //登出service对应的应用。
                 requestLogoutUrl(logoutUrl, userId);
@@ -64,14 +65,21 @@ public class LogoutAppServiceImpl implements LogoutAppService {
         this.logoutAppsExcludeServiceApp(userId, app);
     }
 
-        /**
-         * 请求登出URL地址。若登出失败则会自动重试
-         */
+    /**
+     * 请求登出URL地址。若登出失败则会自动重试
+     */
 
     protected void requestLogoutUrl(String url, String userId) {
         if (StringUtils.isEmpty(url)) {
             return;
         }
+
+        //判断是不是同域下的应用.同域下的应用可以清楚cookie直接注销
+        if (url.contains(ReadPropertiesUtils.read("sso.domain"))) {
+            return;
+        }
+
+
         for (int i = 0; i < RETRY_TIMES; i++) {
             List<NameValuePair> nvps = new ArrayList<NameValuePair>();
             nvps.add(new BasicNameValuePair(WebConstants.USER_ID_PARAM_NAME, userId));
@@ -93,6 +101,7 @@ public class LogoutAppServiceImpl implements LogoutAppService {
 
     /**
      * 请求某个URL，带着参数列表。
+     *
      * @param url
      * @param nameValuePairs
      * @return
@@ -101,7 +110,7 @@ public class LogoutAppServiceImpl implements LogoutAppService {
      */
     protected String requestUrl(String url, List<NameValuePair> nameValuePairs) throws ClientProtocolException, IOException {
         HttpPost httpPost = new HttpPost(url);
-        if(nameValuePairs!=null && nameValuePairs.size()>0){
+        if (nameValuePairs != null && nameValuePairs.size() > 0) {
             httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
         }
         CloseableHttpResponse response = httpClient.execute(httpPost);
@@ -111,31 +120,30 @@ public class LogoutAppServiceImpl implements LogoutAppService {
                 String content = EntityUtils.toString(entity);
                 EntityUtils.consume(entity);
                 return content;
-            }
-            else{
-                logger.warn("request the url: "+url+" , but return the status code is "+response.getStatusLine().getStatusCode());
+            } else {
+                logger.warn("request the url: " + url + " , but return the status code is " + response.getStatusLine().getStatusCode());
                 return null;
             }
-        }
-        finally{
+        } finally {
             response.close();
         }
     }
 
     /**
      * 异步登出用户ID userId登录过的所有应用，排除app.
-     * @param userId 用户ID.
+     *
+     * @param userId     用户ID.
      * @param serviceApp 要排除的app，该app已经登出过。
      */
     protected void logoutAppsExcludeServiceApp(String userId, App serviceApp) {
         List<UserLoggedStatus> list = this.userLoggedStatusStore.findUserLoggedStatus(userId);
         //批量查询对应的应用信息。
-        if(list!=null&& list.size()>0){
-            for(UserLoggedStatus status:list){
+        if (list != null && list.size() > 0) {
+            for (UserLoggedStatus status : list) {
                 App app = appService.finAppById(status.getAppId());
-                if(app!=null){
+                if (app != null) {
                     //若该app已经登出过，则跳过。
-                    if(serviceApp!=null && serviceApp.getAppId().equals(app.getAppId())){
+                    if (serviceApp != null && serviceApp.getAppId().equals(app.getAppId())) {
                         continue;
                     }
                     String logoutUrl = app.getLogoutUrl();
