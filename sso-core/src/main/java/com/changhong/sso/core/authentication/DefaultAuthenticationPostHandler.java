@@ -8,18 +8,16 @@ import com.changhong.sso.common.core.entity.EncryCredentialInfo;
 import com.changhong.sso.common.core.entity.SSOKey;
 import com.changhong.sso.common.core.service.KeyService;
 import com.changhong.sso.common.web.utils.WebConstants;
-import com.changhong.sso.core.app.AppService;
+import com.changhong.sso.common.core.service.AppService;
 import com.changhong.sso.core.authentication.status.UserLoggedStatus;
 import com.changhong.sso.core.authentication.status.UserLoggedStatusStore;
 import com.changhong.sso.exception.NoSSOKeyException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
 
 /**
  * @author ：Yuan Fayang

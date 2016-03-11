@@ -10,6 +10,8 @@ import com.changhong.sso.common.core.entity.SSOKey;
 import com.changhong.sso.common.core.service.KeyService;
 import com.changhong.sso.common.web.utils.WebConstants;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.*;
 import javax.servlet.http.Cookie;
@@ -19,8 +21,6 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * @author ：Yuan Fayang
@@ -31,7 +31,7 @@ import java.util.logging.Logger;
  * 次过滤器必须添加，或自己实现类似过滤功能
  */
 public class SSOClientFilter extends BaseClientFilter {
-    private static final Logger logger = Logger.getLogger(SSOClientFilter.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(SSOClientFilter.class);
 
     /**
      * 用户信息在客户端应用中session中的用户信息，主要用户客户端应用服务记录登录状态
@@ -121,7 +121,9 @@ public class SSOClientFilter extends BaseClientFilter {
         httpServletRequest.setAttribute(SSO_SERVER_LOGOUT_URL,ssoServerLogoutURL);
         //监测是否在本地应用登录
         //若未在本应用登录，则开始SSO登录流程
+        logger.info("用户session---》：{}",session.getAttribute(USER_STAT_IN_SESSION_KEY));
         if (session.getAttribute(USER_STAT_IN_SESSION_KEY) == null) {
+
             //查找参数中是否存在SSO_CLIENT_EC，若不存在，则重定向到登录页
             String ssoClientEC = getClientEC(httpServletRequest);
             if (StringUtils.isEmpty(ssoClientEC)) {
@@ -134,12 +136,13 @@ public class SSOClientFilter extends BaseClientFilter {
                 try {
                     ssoKey = keyService.findByAppId(ssoClientAppId);
                 } catch (Exception e) {
-                    logger.log(Level.SEVERE, "fetch sso key error", e);
+                    logger.error("fetch sso key error{}", e);
                 }
             }
 
             //解密凭证
             EncryCredentialInfo encryCredentialInfo = this.encryCredentialManager.decrypt(new EncryCredential(ssoClientEC));
+            logger.info("用户encryCredentialInfo：--》{}",encryCredentialInfo);
             if (encryCredentialInfo != null) {
                 //检验凭证的合法性
                 boolean valid = this.encryCredentialManager.checkEncryCredentialInfo(encryCredentialInfo);
@@ -220,6 +223,7 @@ public class SSOClientFilter extends BaseClientFilter {
         if (request != null) {
             //先从请求参数中获取
             ec = request.getParameter(WebConstants.SSO_CLIENT_COOKIE_KEY);
+            logger.info("ec--->{}"+ec);
             //再从cookie中获取
             if (StringUtils.isEmpty(ec)) {
                 Cookie cookie = getCookie(request, WebConstants.SSO_CLIENT_COOKIE_KEY);
@@ -244,7 +248,7 @@ public class SSOClientFilter extends BaseClientFilter {
             response.addCookie(new Cookie(
                     WebConstants.SSO_CLIENT_COOKIE_KEY, ec));
         } catch (UnsupportedEncodingException e) {
-            logger.log(Level.SEVERE, "encode with URL error", e);
+            logger.info( "encode with URL error {}", e);
         }
     }
 }

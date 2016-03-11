@@ -3,6 +3,7 @@ package com.changhong.sso.core.authentication.handlers;
 import com.changhong.sso.core.authentication.UsernamePasswordCredential;
 import com.changhong.sso.exception.AuthenticationException;
 import com.changhong.sso.exception.UsernameOrPasswordEmptyException;
+import com.changhong.sso.exception.UsernameOrPasswordInvalidException;
 import org.springframework.util.StringUtils;
 
 /**
@@ -31,10 +32,10 @@ public class UsernamePasswordAuthenticationHandler extends AbstractUsernamePassw
             throw UsernameOrPasswordEmptyException.INSTANCE;
         }
 
-        if (username.equals(getPasswordEncoder().encode(password))) {
+        if (username.trim().equals(getPasswordEncoder().encode(password.trim()))) {
             return true;
         } else {
-           throw  UsernameOrPasswordEmptyException.INSTANCE;
+           throw  UsernameOrPasswordInvalidException.INSTANCE;
         }
     }
 }

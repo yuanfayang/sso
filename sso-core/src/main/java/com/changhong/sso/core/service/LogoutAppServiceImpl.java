@@ -2,7 +2,7 @@ package com.changhong.sso.core.service;
 
 import com.changhong.sso.common.core.entity.App;
 import com.changhong.sso.common.web.utils.WebConstants;
-import com.changhong.sso.core.app.AppService;
+import com.changhong.sso.common.core.service.AppService;
 import com.changhong.sso.core.authentication.status.UserLoggedStatus;
 import com.changhong.sso.core.authentication.status.UserLoggedStatusStore;
 import org.apache.commons.lang3.StringUtils;
