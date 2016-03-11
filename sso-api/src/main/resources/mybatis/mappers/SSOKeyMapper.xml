@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.changhong.sso.core.dao.SSOKeyDao">
+    <resultMap id="SSOKey" type="com.changhong.sso.common.core.entity.SSOKey">
+        <id column="keyId" property="keyId" jdbcType="BIGINT"/>
+        <result column="appId" property="appId" jdbcType="VARCHAR"/>
+        <result column="value" property="value" jdbcType="VARCHAR"/>
+        <result column="keyPath" property="keyPath" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="findByKeyId" resultMap="SSOKey" parameterType="String">
+        SELECT * FROM sso_key WHERE keyId=#{keyId,jdbcType=BIGINT}
+    </select>
+
+    <select id="findByAppId" resultMap="SSOKey" parameterType="String">
+        SELECT * FROM sso_key WHERE appId=#{appId,jdbcType=BIGINT}
+    </select>
+</mapper>

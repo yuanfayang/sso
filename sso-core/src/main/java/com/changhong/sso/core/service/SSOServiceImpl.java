@@ -2,7 +2,7 @@ package com.changhong.sso.core.service;
 
 import com.changhong.sso.common.core.authentication.Credential;
 import com.changhong.sso.common.core.entity.App;
-import com.changhong.sso.core.app.AppService;
+import com.changhong.sso.common.core.service.AppService;
 import com.changhong.sso.core.authentication.Authentication;
 import com.changhong.sso.core.authentication.AuthenticationManager;
 import com.changhong.sso.core.authentication.status.UserLoggedStatus;

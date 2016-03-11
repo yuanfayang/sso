@@ -10,6 +10,11 @@
         本项目是sso的web工程，提供了对外的http接口。
     </description>
 
+    <context-param>
+        <param-name>spring.profiles.active</param-name>
+        <param-value>development</param-value>
+    </context-param>
+
     <!--允许跨域调用的过滤器配置-->
     <filter>
         <filter-name>crossdomainFilter</filter-name>
@@ -25,7 +30,8 @@
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>classpath*:spring/spring-*.xml</param-value>
+            <param-value>classpath*:spring/spring-*
+            </param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
@@ -33,4 +39,28 @@
         <servlet-name>DispatcherServlet</servlet-name>
         <url-pattern>/api/*</url-pattern>
     </servlet-mapping>
+
+    <!-- 随机验证码 -->
+    <servlet>
+        <servlet-name>ValidateCodeServlet</servlet-name>
+        <servlet-class>com.changhong.sso.api.servlet.ValidateCodeServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ValidateCodeServlet</servlet-name>
+        <url-pattern>/servlet/validateCodeServlet</url-pattern>
+    </servlet-mapping>
+
+    <error-page>
+        <error-code>400</error-code>
+        <location>/400.jsp</location>
+    </error-page>
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/404.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/500.jsp</location>
+    </error-page>
 </web-app>

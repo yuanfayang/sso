@@ -8,7 +8,6 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>登录成功</title>
-<script src="logout.js" type="text/javascript"></script>
 </head>
 <body>
 <h1>恭喜您，登出成功！</h1>

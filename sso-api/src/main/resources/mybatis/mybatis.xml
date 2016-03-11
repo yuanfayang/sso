@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <settings>
+        <!--全局映射器启用缓存 默认为true-->
+        <setting name="cacheEnabled" value="true"/>
+        <!--延迟加载的全局开关 默认false-->
+        <setting name="lazyLoadingEnabled" value="false"/>
+        <!--当启用时,对任意延迟属性的调用会使带有延迟加载的属性对象完整加载，反之，每种属性将会按需加载 默认true-->
+        <setting name="aggressiveLazyLoading" value="true"/>
+        <!--是否允许单一语句返回多结果集（需要兼容驱动） 默认true-->
+        <setting name="multipleResultSetsEnabled" value="true"/>
+        <!--使用标签代替列名 默认为true-->
+        <setting name="useColumnLabel" value="true"/>
+        <!--允许JDBC支持自动生成主键，如果设置为true，则这个设置强制使用自动生成主键 默认false-->
+        <setting name="useGeneratedKeys" value="true"/>
+        <!--mybatis 如何自动映射列到字段或属性，NONE：取消自动映射，PARTIAL：自动映射没有定义嵌套结果集映射的
+        的结果集，FULL：会自动映射任意复杂的记过集（无论是否嵌套）-->
+        <setting name="autoMappingBehavior" value="PARTIAL"/>
+        <!--配置默认的执行器。SIMPLE：就是普通的执行器，REUSE:执行器会重用预处理语句，BATCH:执行器将重用语句bin
+        并执行批量更新 默认:SIMPLE-->
+        <setting name="defaultExecutorType" value="SIMPLE"/>
+        <!--设置超时时间，决定驱动等待数据库响应的秒数-->
+        <setting name="defaultStatementTimeout" value="3"/>
+        <!--是否开启自动驼峰命名规则映射 默认false-->
+        <setting name="mapUnderscoreToCamelCase" value="false"/>
+        <!--Mybatis利用本地缓存机制防止循环引用和加速重复嵌套查询 SESSION：缓存一个会话中执行的所有查询，、
+        STATEMENT：本地会话仅用在语句执行上，对相同SqlSession的不同调用将不共享数据 默认：SESSION
+        -->
+        <setting name="localCacheScope" value="SESSION"/>
+        <!--当没有为参数提供特定的jdbc类型时，为空值指定jdbc类型-->
+        <setting name="jdbcTypeForNull" value="OTHER"/>
+        <!--指定动态SQL生成的默认语言，默认：org.apache.ibatis.scripting.xmltags.XMLDynamicLanguageDriver-->
+        <!-- <setting name="defaultScriptingLanguage" value="org.apache.ibatis.scripting.xmltags.XMLDynamicLanguageDriver"/>-->
+        <!--指定当结果集中的值为null的时候是否调用映射对象的setter-->
+        <setting name="callSettersOnNulls" value="false"/>
+        <!--指定Mybatis增加到日志名称的前缀-->
+        <setting name="logPrefix" value="dao."/>
+        <!--指定Mybatis所用日志的具体实现，未指定是将自动查找
+        SLF4J | LOG4J | LOG4J2 | JDK_LOGGING | COMMONS_LOGGING | STDOUT_LOGGING | NO_LOGGING-->
+        <setting name="logImpl" value="SLF4J"/>
+        <!--指定Mybatis创建具有延迟加载能力的对象所用到的代理工具，MyBatis 3.3 or above默认JAVASSIST-->
+        <!--<setting name="proxyFactory" value="CGLIB"/>-->
+        <!--<setting name="vfsImpl" value=""/>-->
+    </settings>
+
+    <!--类别别名-->
+    <typeAliases>
+        <!--指定一个包名，Mybatis会在包名下面搜索需要的Java Bean-->
+        <package name="com.changhong.sso.common.core.entity"/>
+    </typeAliases>
+
+    <!--从结果集中取出一个值，转换成java类型的处理器-->
+    <typeHandlers></typeHandlers>
+
+</configuration>

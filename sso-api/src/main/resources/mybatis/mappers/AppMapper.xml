@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.changhong.sso.core.dao.AppDao">
+    <resultMap id="App" type="com.changhong.sso.common.core.entity.App">
+        <id column="appId" property="appId" jdbcType="VARCHAR"/>
+        <result column="appName" property="appName" jdbcType="VARCHAR"/>
+        <result column="host" property="host" jdbcType="VARCHAR"/>
+        <result column="logoutUrl" property="logoutUrl" jdbcType="VARCHAR"/>
+        <result column="isSSOServer" property="isSSOServer" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <select id="finAppById" resultMap="App" parameterType="String">
+        SELECT * FROM sso_app WHERE appId=#{appId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="findSSOservie" resultMap="App">
+        SELECT * FROM sso_app WHERE isSSOServer='1'
+    </select>
+
+    <select id="findAll" resultMap="App">
+        SELECT * FROM sso_app
+    </select>
+</mapper>

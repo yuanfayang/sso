@@ -18,19 +18,16 @@
             <groupId>com.changhong.sso</groupId>
             <artifactId>sso-core</artifactId>
             <version>${parent.version}</version>
-            <type>pom</type>
         </dependency>
         <dependency>
             <groupId>com.changhong.sso</groupId>
             <artifactId>sso-common</artifactId>
             <version>${parent.version}</version>
-            <type>pom</type>
         </dependency>
         <dependency>
             <groupId>com.changhong.sso</groupId>
             <artifactId>sso-exception</artifactId>
             <version>${parent.version}</version>
-            <type>pom</type>
         </dependency>
         <!--modules dependencies end-->
 
@@ -73,6 +70,53 @@
             <version>2.4.0</version>
         </dependency>
         <!--jackson end-->
+
+        <!--mybatis begin-->
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>3.2.8</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis-spring</artifactId>
+            <version>1.2.3</version>
+        </dependency>
+        <!--mybatis end-->
+
+        <!--mysql-connector begin-->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.36</version>
+        </dependency>
+        <!--mysql-connector end-->
+
+        <!-- DruidDataSource begin-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>1.0.15</version>
+        </dependency>
+        <!-- DruidDataSource end-->
+
+        <!--ehcache begin-->
+        <dependency>
+            <groupId>net.sf.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
+            <version>2.10.1</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.ehcache</groupId>
+            <artifactId>ehcache-core</artifactId>
+            <version>2.6.11</version>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-jaxrs</artifactId>
+            <version>1.9.11</version>
+        </dependency>
+        <!--ehcache end-->
 
         <!--jstl begin-->
         <dependency>
