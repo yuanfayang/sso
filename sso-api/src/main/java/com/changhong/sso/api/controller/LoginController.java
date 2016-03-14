@@ -48,13 +48,17 @@ public class LoginController {
     @RequestMapping(value = {"/login"})
     public ModelAndView login(HttpServletRequest request,
                               HttpServletResponse response) {
+        logger.info("测试info");
+        logger.debug("测试debug");
+        logger.trace("测试trace");
+        logger.error("测试error");
+
+
         ModelAndView mv = new ModelAndView("login2");
-        logger.info("mv:{}",mv);
         //解析用户凭据。
         Credential credential = credentialResolver.resolveCredential(request);
         //没有提供任何认证凭据。
         if (credential == null) {
-            logger.info("用户开始登录系统,登录凭据为:{}", JSONObject.fromObject(credential));
             //设置serivce地址到session中。
             String service = request.getParameter(WebConstants.SERVICE_PARAM_NAME);
             if (!StringUtils.isEmpty(service)) {
@@ -63,6 +67,7 @@ public class LoginController {
             //返回到登录页面，索取用户凭据。
             return mv;
         } else {
+            logger.info("用户开始登录系统,登录凭据为:{}", JSONObject.fromObject(credential));
             //提供了用户凭据
             //调用核心结果进行凭证认证
             LoginResult result = ssoService.login(credential);
