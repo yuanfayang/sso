@@ -48,12 +48,6 @@ public class LoginController {
     @RequestMapping(value = {"/login"})
     public ModelAndView login(HttpServletRequest request,
                               HttpServletResponse response) {
-        logger.info("测试info");
-        logger.debug("测试debug");
-        logger.trace("测试trace");
-        logger.error("测试error");
-
-
         ModelAndView mv = new ModelAndView("login2");
         //解析用户凭据。
         Credential credential = credentialResolver.resolveCredential(request);

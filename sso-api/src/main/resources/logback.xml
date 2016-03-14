@@ -10,7 +10,7 @@
 <configuration>
 	<jmxConfigurator />
 
-	<property name="BASEPATH" value="/data/logs/sso"/>
+	<property name="BASEPATH" value="../data/logs/sso"/>
 
 	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
 		<Target>System.out</Target>

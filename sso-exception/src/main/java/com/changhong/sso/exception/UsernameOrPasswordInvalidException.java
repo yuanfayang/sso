@@ -16,6 +16,6 @@ public class UsernameOrPasswordInvalidException extends InvalidCrendentialExcept
     private UsernameOrPasswordInvalidException() {
         super();
         this.setCode(ExceptionConstants.INVALID_USERNAMEORPASSWORD_CODE);
-        this.setCode(ExceptionConstants.INVALID_USERNAMEORPASSWORD_MSGKEY);
+        this.setMsgKey(ExceptionConstants.INVALID_USERNAMEORPASSWORD_MSGKEY);
     }
 }
