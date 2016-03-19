@@ -58,8 +58,9 @@ public class SSOClientLogoutFilter extends BaseClientFilter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+        HttpSession session=httpServletRequest.getSession();
 
-
+/*
         //获取用户的userId参数
         String userId = request.getParameter(WebConstants.USER_ID_PARAM_NAME);
         if (StringUtils.isEmpty(userId)) {
@@ -72,27 +73,31 @@ public class SSOClientLogoutFilter extends BaseClientFilter {
             logger.warn(SESSIONID_IS_NOT_CONTATINS);
             sendError(httpServletResponse, SESSIONID_IS_NULL);
             return;
-        }
+        }*/
 
-        HttpSession session = SessionStorage.get(userId);
+        //HttpSession session = SessionStorage.get(userId);
         logger.info("##########################:"+session.getAttribute(SSOClientFilter.USER_STAT_IN_SESSION_KEY));
         //本地应用未登出，则进行登出处理
-        if (session != null && session.getAttribute(SSOClientFilter.USER_STAT_IN_SESSION_KEY) != null) {
+        try {
+            if (session != null && session.getAttribute(SSOClientFilter.USER_STAT_IN_SESSION_KEY) != null) {
 
-            //清除session
-            if (session.getAttribute(SSOClientFilter.USER_STAT_IN_SESSION_KEY) != null) {
-                session.setAttribute(SSOClientFilter.USER_STAT_IN_SESSION_KEY, null);
+                //清除session
+                if (session.getAttribute(SSOClientFilter.USER_STAT_IN_SESSION_KEY) != null) {
+                    session.setAttribute(SSOClientFilter.USER_STAT_IN_SESSION_KEY, null);
+                }
+
+                //若本应用登出处理器不为空，则进行相应处理,登出本应用
+                if (appClientLogoutHandler != null) {
+                    appClientLogoutHandler.logoutClient(httpServletRequest, httpServletResponse);
+                }
+
+                //设置session过期
+                session.setMaxInactiveInterval(0);
+
             }
-
-            //若本应用登出处理器不为空，则进行相应处理,登出本应用
-            if (appClientLogoutHandler != null) {
-                appClientLogoutHandler.logoutClient(httpServletRequest, httpServletResponse, userId);
-            }
-
-            //设置session过期
-            session.setMaxInactiveInterval(0);
-            //移除session信息
-            SessionStorage.remove(userId);
+        } catch (Exception e) {
+            //响应登录结果。
+            sendError(httpServletResponse);
         }
         //相应登录结果
         sendResponse(httpServletResponse);
@@ -100,7 +105,6 @@ public class SSOClientLogoutFilter extends BaseClientFilter {
 
     @Override
     public void destroy() {
-
     }
 
     private void sendResponse(HttpServletResponse response) {
@@ -116,11 +120,11 @@ public class SSOClientLogoutFilter extends BaseClientFilter {
         }
     }
 
-    private void sendError(HttpServletResponse response, String msg) {
+    private void sendError(HttpServletResponse response) {
         try {
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, msg);
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         } catch (IOException e) {
-            logger.error("send response error", e);
+            logger.error("send response error :{}", e);
         }
     }
 }

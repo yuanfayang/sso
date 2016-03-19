@@ -172,7 +172,10 @@ public class SSOClientFilter extends BaseClientFilter {
                         }
                     }
                     //保存用户的信息到session中
-                    SessionStorage.put(encryCredentialInfo.getUserId(),session);
+                   // SessionStorage.put(encryCredentialInfo.getUserId(),session);
+
+                    //登录成功后，写入EC到cookie中。
+                   //writeEC(ssoClientEC,httpServletResponse);
 
                     //重新定位请求，避免尾部出现长参数。
                     httpServletResponse.sendRedirect(url);
@@ -180,7 +183,6 @@ public class SSOClientFilter extends BaseClientFilter {
                 }
             }
             httpServletResponse.sendRedirect(buildRedirectToSSOServer(httpServletRequest));
-            return;
         } else {
             //若已登录，则接续其他过滤器链
             chain.doFilter(request, response);
@@ -222,12 +224,12 @@ public class SSOClientFilter extends BaseClientFilter {
             ec = request.getParameter(WebConstants.SSO_CLIENT_COOKIE_KEY);
             logger.info("ec--->{}"+ec);
             //再从cookie中获取
-            if (StringUtils.isEmpty(ec)) {
+            /*if (StringUtils.isEmpty(ec)) {
                 Cookie cookie = getCookie(request, WebConstants.SSO_CLIENT_COOKIE_KEY);
                 if (cookie != null) {
                     ec = cookie.getValue().trim();
                 }
-            }
+            }*/
         }
         return ec;
     }

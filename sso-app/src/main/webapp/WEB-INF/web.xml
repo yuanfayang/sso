@@ -48,7 +48,7 @@
         <init-param>
             <description>SSO服务器主机地址</description>
             <param-name>ssoServerHost</param-name>
-            <param-value>http://111.9.116.181:20160/sso/</param-value>
+            <param-value>>http://127.0.0.1:8080/sso/</param-value>
         </init-param>
         <init-param>
             <description>SSO服务登录地址</description>

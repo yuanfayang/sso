@@ -103,7 +103,7 @@
 
 	<root level="INFO">
 		<appender-ref ref="console"/>
-		<appender-ref ref="businessLog"/>
+		<!--<appender-ref ref="businessLog"/>-->
 <!--		<appender-ref ref="F"/>
 		<appender-ref ref="A5"/>-->
 	</root>

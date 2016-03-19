@@ -8,6 +8,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>首页</title>
+    <script type="application/javascript" src="http://127.0.0.1:8080/sso/api/logoutJs?appId=3b0d556d3add420596a9afdd58f1bc10&logoutSuccessUrl=www.baidu.com"></script>
 </head>
 <body>
 <p>

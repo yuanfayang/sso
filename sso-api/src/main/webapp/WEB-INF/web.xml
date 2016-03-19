@@ -22,7 +22,7 @@
     </filter>
     <filter-mapping>
         <filter-name>crossdomainFilter</filter-name>
-        <url-pattern>/api/*</url-pattern>
+        <url-pattern>/api/rest/*</url-pattern>
     </filter-mapping>
 
     <servlet>
