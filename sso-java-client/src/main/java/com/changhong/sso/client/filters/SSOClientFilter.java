@@ -9,6 +9,7 @@ import com.changhong.sso.common.core.entity.EncryCredentialInfo;
 import com.changhong.sso.common.core.entity.SSOKey;
 import com.changhong.sso.common.core.service.KeyService;
 import com.changhong.sso.common.web.utils.WebConstants;
+import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -142,7 +143,7 @@ public class SSOClientFilter extends BaseClientFilter {
 
             //解密凭证
             EncryCredentialInfo encryCredentialInfo = this.encryCredentialManager.decrypt(new EncryCredential(ssoClientEC));
-            logger.info("用户encryCredentialInfo：--》{}",encryCredentialInfo);
+            logger.info("用户encryCredentialInfo：--》{}", JSONObject.fromObject(encryCredentialInfo));
             if (encryCredentialInfo != null) {
                 //检验凭证的合法性
                 boolean valid = this.encryCredentialManager.checkEncryCredentialInfo(encryCredentialInfo);

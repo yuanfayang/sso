@@ -1,6 +1,7 @@
 package com.changhong.sso.core.authentication.handlers;
 
 import com.changhong.sso.common.core.authentication.Credential;
+import com.changhong.sso.core.authentication.status.Authenticated;
 import com.changhong.sso.exception.AuthenticationException;
 
 /**
@@ -30,19 +31,19 @@ public abstract class AbstractPreAndPostProcessingAuthenticationHandler implemen
      *            the result of the authentication attempt.
      * @return true if the handler should return true, false otherwise.
      */
-    protected boolean postAuthenticate(final Credential credential,
-                                       final boolean authenticated) {
+    protected Authenticated postAuthenticate(final Credential credential,
+                                       final Authenticated authenticated) {
         return authenticated;
     }
 
-    public final boolean authenticate(final Credential credential)
+    public final Authenticated authenticate(final Credential credential)
             throws AuthenticationException {
 
         if (!preAuthenticate(credential)) {
-            return false;
+            return null;
         }
 
-        final boolean authenticated = doAuthentication(credential);
+        final Authenticated authenticated = doAuthentication(credential);
 
         return postAuthenticate(credential, authenticated);
     }
@@ -54,6 +55,6 @@ public abstract class AbstractPreAndPostProcessingAuthenticationHandler implemen
      * @return 认证结果。
      * @throws AuthenticationException
      */
-    protected abstract boolean doAuthentication(final Credential credential)
+    protected abstract Authenticated doAuthentication(final Credential credential)
             throws AuthenticationException;
 }

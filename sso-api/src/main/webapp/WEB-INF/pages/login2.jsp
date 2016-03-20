@@ -2,6 +2,7 @@
 <%@ include file="/WEB-INF/common/taglib.jsp" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@ page isELIgnored="false" %>
+<c:set var="ctx" value="${pageContext.request.contextPath}" />
 <html>
 <head>
     <title>微服驿站</title>
@@ -62,8 +63,8 @@
                                             .parent());
                                 }
                             });
-                    $("#closeBtn").on('click', function () {
-                        $("#messageBox").hide();
+                    $(".close").on('click', function () {
+                        $(".alert-error").hide();
                     })
                 });
     </script>
@@ -83,6 +84,13 @@
         <button id="closeBtn" class="close">×</button>
         <label id="loginError" class="error"></label>
     </div>
+
+    <c:if test="${code!=null}">
+        <div id="messageBox" class="alert alert-error ">
+            <button id="closeBtn" class="close">×</button>
+            <label id="loginError" class="error">错误信息：${msg}</label>
+        </div>
+    </c:if>
     <div id="login-wraper">
         <form id="loginForm" class="form login-form"
               action="${ctx}/api/login" method="post">
@@ -93,13 +101,13 @@
                 <div class="control-group">
                     <div class="controls">
                         <input type="text" id="username" name="username" class="required"
-                               value="${username}" placeholder="登录名">
+                               value="api-test" placeholder="登录名">
                     </div>
                 </div>
 
                 <div class="control-group">
                     <div class="controls">
-                        <input type="password" id="password" name="password"
+                        <input type="password" id="password" name="password" value="apiTest"
                                class="required" placeholder="密码"/>
                     </div>
                 </div>

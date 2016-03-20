@@ -1,6 +1,7 @@
 package com.changhong.sso.core.authentication.handlers;
 
 import com.changhong.sso.common.core.authentication.Credential;
+import com.changhong.sso.core.authentication.status.Authenticated;
 import com.changhong.sso.exception.AuthenticationException;
 
 /**
@@ -18,7 +19,7 @@ public interface AuthenticationHandler {
      * @return 是否通过认证，true：通过，false：未通过
      * @throws AuthenticationException
      */
-    boolean authenticate(Credential credential) throws AuthenticationException;
+    Authenticated authenticate(Credential credential) throws AuthenticationException;
 
     /**
      * 是否支持用户凭证credential的认证处理

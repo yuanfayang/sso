@@ -3,6 +3,7 @@ package com.changhong.sso.core.authentication.handlers;
 
 import com.changhong.sso.common.core.authentication.Credential;
 import com.changhong.sso.core.authentication.UsernamePasswordCredential;
+import com.changhong.sso.core.authentication.status.Authenticated;
 import com.changhong.sso.exception.AuthenticationException;
 
 /**
@@ -42,7 +43,7 @@ public abstract class AbstractUsernamePasswordAuthenticationHandler extends
 	 * and delegates to abstract authenticateUsernamePasswordInternal so
 	 * subclasses do not need to cast.
 	 */
-	protected final boolean doAuthentication(final Credential credential)
+	protected final Authenticated doAuthentication(final Credential credential)
 			throws AuthenticationException {
 		return authenticateUsernamePasswordInternal((UsernamePasswordCredential) credential);
 	}
@@ -58,7 +59,7 @@ public abstract class AbstractUsernamePasswordAuthenticationHandler extends
 	 * @throws AuthenticationException
 	 *             if authenticity cannot be determined.
 	 */
-	protected abstract boolean authenticateUsernamePasswordInternal(
+	protected abstract Authenticated authenticateUsernamePasswordInternal(
 			final UsernamePasswordCredential credential)
 			throws AuthenticationException;
 

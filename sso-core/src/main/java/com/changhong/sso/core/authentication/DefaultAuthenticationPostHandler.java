@@ -1,11 +1,13 @@
 package com.changhong.sso.core.authentication;
 
+import com.alibaba.fastjson.JSONObject;
 import com.changhong.sso.common.core.authentication.AbstractParameters;
 import com.changhong.sso.common.core.authentication.Credential;
 import com.changhong.sso.common.core.authentication.EncryCredentialManager;
 import com.changhong.sso.common.core.entity.App;
 import com.changhong.sso.common.core.entity.EncryCredentialInfo;
 import com.changhong.sso.common.core.entity.SSOKey;
+import com.changhong.sso.common.core.entity.User;
 import com.changhong.sso.common.core.service.KeyService;
 import com.changhong.sso.common.web.utils.WebConstants;
 import com.changhong.sso.common.core.service.AppService;
@@ -122,7 +124,7 @@ public class DefaultAuthenticationPostHandler implements AuthenticationPostHandl
      * @param principal      用户主体
      * @return 加密基础啊信息
      */
-    private EncryCredentialInfo buildEncryCredentialInfo(String appId, AuthenticationImpl authentication, Principal principal) {
+    private EncryCredentialInfo buildEncryCredentialInfo(String appId, AuthenticationImpl authentication,Principal principal) {
         EncryCredentialInfo encryCredentialInfo = new EncryCredentialInfo();
         if (authentication == null || principal == null) {
             return encryCredentialInfo;
@@ -136,6 +138,7 @@ public class DefaultAuthenticationPostHandler implements AuthenticationPostHandl
         encryCredentialInfo.setCreateTime(authentication.getAuthenticationDate());
         encryCredentialInfo.setUserId(principal.getId());
         encryCredentialInfo.setKeyId(ssoKey.getKeyId());
+        encryCredentialInfo.setUser(principal.getAttributes().containsKey("user")? (User) principal.getAttributes().get("user") :null);
 
         Date expireDate = new Date((authentication.getAuthenticationDate().getTime() + DURATION));
         encryCredentialInfo.setExpiredTime(expireDate);
