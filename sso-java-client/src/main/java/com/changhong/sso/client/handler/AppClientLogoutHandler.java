@@ -15,7 +15,7 @@ public interface AppClientLogoutHandler {
 	 * @param request http请求对象。
 	 * @param response http响应对象。
 	 */
-	public void logoutClient(HttpServletRequest request, HttpServletResponse response);
+	void logoutClient(HttpServletRequest request, HttpServletResponse response);
 
 
 }

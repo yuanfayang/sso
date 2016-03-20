@@ -14,6 +14,7 @@ import java.util.logging.Logger;
  * @dateTime : 2016/2/20 14:01
  * @discription : 应用服务登出应用服务处理器
  */
+
 public class SSOAppClientLogoutHandlerImpl implements AppClientLogoutHandler {
     private static final Logger logger = Logger.getLogger(SSOAppClientLoginHandlerImpl.class.getName());
 
@@ -26,4 +27,9 @@ public class SSOAppClientLogoutHandlerImpl implements AppClientLogoutHandler {
             logger.info("the user id is " + encryCredentialInfo.getUserId() + " has logined out the app");
         }
     }
+
+    /*@Override
+    public void logoutClient(HttpServletRequest request, HttpServletResponse response) {
+
+    }*/
 }
