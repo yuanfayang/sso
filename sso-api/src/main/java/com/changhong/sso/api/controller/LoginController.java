@@ -118,29 +118,35 @@ public class LoginController {
                 request.getSession().removeAttribute(WebConstants.SSO_SERVICE_KEY_IN_SESSION);
 
                 // 如果有加密凭据信息，则写入加密凭据值到cookie中。
-                if (authentication != null && authentication.getAttributes() != null) {
-                    Map<String, Object> attributes = authentication.getAttributes();
-                    //TODO
-                    //SSO服务端加密凭证写cookie中
-                    if (attributes.get(AuthenticationPostHandler.SSO_SERVER_EC_KEY) != null) {
-                        Cookie cookie = new Cookie(WebConstants.SSO_SERVER_EC_COOKIE_KEY, attributes.get(AuthenticationPostHandler.SSO_SERVER_EC_KEY).toString());
-                        //限制Cookie的域
-                        //cookie.setDomain(ReadPropertiesUtils.read("sso.domain"));
-                        response.addCookie(cookie);
+                if (authentication != null) {
+                    if (authentication.getAttributes()!=null){
+                        Map<String, Object> attributes = authentication.getAttributes();
+                        //TODO 写入sso的cookie
+                        //SSO服务端加密凭证写cookie中
+                        if (attributes.get(AuthenticationPostHandler.SSO_SERVER_EC_KEY) != null) {
+                            Cookie cookie = new Cookie(WebConstants.SSO_SERVER_EC_COOKIE_KEY, attributes.get(AuthenticationPostHandler.SSO_SERVER_EC_KEY).toString());
+                            //限制Cookie的域
+                            //cookie.setDomain(ReadPropertiesUtils.read("sso.domain"));
+                            response.addCookie(cookie);
+                        }
+                        //TODO 校验是否存在service
+                        //SSO客户端加密凭证和参数service都存在，则跳转到对应的页面中
+                        if (attributes.get(AuthenticationPostHandler.SSO_CLIENT_EC_KEY) != null
+                                && !StringUtils.isEmpty(attributes.get(WebConstants.SERVICE_PARAM_NAME).toString())) {
+                            //TODO 看是否需要进行针对service的跳转操作
+                            logger.info("SSO_CLIENT_EC_KEY:{}", attributes.get(AuthenticationPostHandler.SSO_CLIENT_EC_KEY));
+                        }
                     }
 
-                    //TODO
-                    //SSO客户端加密凭证和参数service都存在，则跳转到对应的页面中
-                    //SSO客户端加密凭证和参数service都存在，则跳转到对应的页面中
-                    if (attributes.get(AuthenticationPostHandler.SSO_CLIENT_EC_KEY) != null
-                            && !StringUtils.isEmpty(attributes.get(WebConstants.SERVICE_PARAM_NAME).toString())) {
-                        //TODO
-                        logger.info("SSO_CLIENT_EC_KEY:{}",attributes.get(AuthenticationPostHandler.SSO_CLIENT_EC_KEY));
-                    }
 
                     JSONObject resultObj = new JSONObject();
                     resultObj.put("code", "200");
                     resultObj.put("msg", "登录成功！");
+
+                    JSONObject dataObj = new JSONObject();
+                    dataObj.accumulate("user", authentication.getPrincipal().getAttributes().get("user"));
+
+                    resultObj.put("data", dataObj);
                     return new ResponseEntity<>(resultObj, HttpStatus.OK);
                 }
             } else {

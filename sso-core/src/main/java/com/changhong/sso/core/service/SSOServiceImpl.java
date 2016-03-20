@@ -51,6 +51,7 @@ public class SSOServiceImpl implements SSOService {
 
             //添加登录的应用记录
         } catch (InvalidCrendentialException e) {
+            logger.error("认证用户凭证失败：{}",e.getMessage());
             e.printStackTrace();
             //登录失败
             loginResult.setSuccess(false);
