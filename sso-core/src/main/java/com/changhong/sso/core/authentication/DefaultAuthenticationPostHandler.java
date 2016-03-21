@@ -90,7 +90,7 @@ public class DefaultAuthenticationPostHandler implements AuthenticationPostHandl
         if (credential != null && credential instanceof AbstractParameters) {
             abstractParameter = (AbstractParameters) credential;
         }
-        //若登录对应的服务参数service的值不为空，则使用该service对应的应用的key进行加密。
+        //若登录对应用的服务参数service的值不为空，则使用该service对应的应用的key进行加密。
         if (authentication != null && abstractParameter != null && abstractParameter.getParemeterValue(WebConstants.SERVICE_PARAM_NAME) != null) {
             String service = abstractParameter.getParemeterValue(WebConstants.SERVICE_PARAM_NAME).toString().trim().toLowerCase();
             //service不为空，且符合Http协议URL格式，则继续加密。
