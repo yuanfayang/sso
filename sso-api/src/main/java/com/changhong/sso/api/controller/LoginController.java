@@ -22,10 +22,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.util.WebUtils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -92,7 +94,7 @@ public class LoginController {
     @RequestMapping(value = "/rest/login", method = RequestMethod.POST)
     @ResponseBody
     public Object restLogin(HttpServletRequest request,
-                            HttpServletResponse response) {
+                            HttpServletResponse response) throws IOException {
         //解析用户凭据。
         Credential credential = credentialResolver.resolveCredential(request);
         //没有提供登录凭证
@@ -135,9 +137,19 @@ public class LoginController {
                                 && !StringUtils.isEmpty(attributes.get(WebConstants.SERVICE_PARAM_NAME).toString())) {
                             //TODO 看是否需要进行针对service的跳转操作
                             logger.info("SSO_CLIENT_EC_KEY:{}", attributes.get(AuthenticationPostHandler.SSO_CLIENT_EC_KEY));
+
+                            StringBuffer sb = new StringBuffer(attributes.get(WebConstants.SERVICE_PARAM_NAME).toString());
+                            if (attributes.get(WebConstants.SERVICE_PARAM_NAME).toString().contains("?")) {
+                                sb.append("&");
+                            } else {
+                                sb.append("?");
+                            }
+                            sb.append(WebConstants.SSO_CLIENT_COOKIE_KEY)
+                                    .append("=").append(attributes.get(AuthenticationPostHandler.SSO_CLIENT_EC_KEY).toString());
+
+                            response.sendRedirect(sb.toString());
                         }
                     }
-
 
                     JSONObject resultObj = new JSONObject();
                     resultObj.put("code", "200");

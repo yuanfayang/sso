@@ -95,7 +95,6 @@ public class DefaultLoginResultToView implements LoginResultToView {
         StringBuffer sb = new StringBuffer(service);
         if (service.contains("?")) {
             sb.append("&");
-
         } else {
             sb.append("?");
         }
