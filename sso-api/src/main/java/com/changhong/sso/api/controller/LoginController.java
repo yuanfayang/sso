@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.WebUtils;
@@ -93,7 +94,9 @@ public class LoginController {
      */
     @RequestMapping(value = "/rest/login", method = RequestMethod.POST)
     @ResponseBody
-    public Object restLogin(HttpServletRequest request,
+    public Object restLogin(@RequestParam(value = "service") String service,
+                            @RequestParam(value = "appId") String appId,
+                            HttpServletRequest request,
                             HttpServletResponse response) throws IOException {
         //解析用户凭据。
         Credential credential = credentialResolver.resolveCredential(request);
@@ -101,11 +104,12 @@ public class LoginController {
         if (credential == null) {
             //TODO
             //设置serivce地址到session中。
-            String service = request.getParameter(WebConstants.SERVICE_PARAM_NAME);
             if (!StringUtils.isEmpty(service)) {
                 request.getSession().setAttribute(WebConstants.SSO_SERVICE_KEY_IN_SESSION, service);
             }
-            return new ResponseEntity<>(EmptyCredentialException.INSTANCE, HttpStatus.UNAUTHORIZED);
+
+            JSONObject error=new JSONObject().accumulate("code",EmptyCredentialException.INSTANCE.getCode()).accumulate("msgKey",EmptyCredentialException.INSTANCE.getMsgKey());
+            return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
         } else {
             //TODO
             logger.info("用户开始登录系统,登录凭据为:{}", JSONObject.fromObject(credential));
@@ -115,7 +119,6 @@ public class LoginController {
             if (result.isSuccess()) {
                 //登录结果对象
                 Authentication authentication = result.getAuthentication();
-
                 //清除session中的状态信息service
                 request.getSession().removeAttribute(WebConstants.SSO_SERVICE_KEY_IN_SESSION);
 
@@ -131,7 +134,7 @@ public class LoginController {
                             //cookie.setDomain(ReadPropertiesUtils.read("sso.domain"));
                             response.addCookie(cookie);
                         }
-                        //TODO 校验是否存在service
+                        /*//TODO 校验是否存在service
                         //SSO客户端加密凭证和参数service都存在，则跳转到对应的页面中
                         if (attributes.get(AuthenticationPostHandler.SSO_CLIENT_EC_KEY) != null
                                 && !StringUtils.isEmpty(attributes.get(WebConstants.SERVICE_PARAM_NAME).toString())) {
@@ -148,18 +151,22 @@ public class LoginController {
                                     .append("=").append(attributes.get(AuthenticationPostHandler.SSO_CLIENT_EC_KEY).toString());
 
                             response.sendRedirect(sb.toString());
-                        }
+                        }*/
+
+                        JSONObject resultObj = new JSONObject();
+                        resultObj.put("code", "200");
+                        resultObj.put("msg", "登录成功！");
+
+                        JSONObject dataObj = new JSONObject();
+                        dataObj.accumulate("user", authentication.getPrincipal().getAttributes().get("user"));
+
+                        resultObj.put("data", dataObj);
+                        return new ResponseEntity<>(resultObj, HttpStatus.OK);
                     }
-
-                    JSONObject resultObj = new JSONObject();
-                    resultObj.put("code", "200");
-                    resultObj.put("msg", "登录成功！");
-
-                    JSONObject dataObj = new JSONObject();
-                    dataObj.accumulate("user", authentication.getPrincipal().getAttributes().get("user"));
-
-                    resultObj.put("data", dataObj);
-                    return new ResponseEntity<>(resultObj, HttpStatus.OK);
+                    else {
+                        JSONObject error=new JSONObject().accumulate("code",UsernameOrPasswordInvalidException.INSTANCE.getCode()).accumulate("msgKey",UsernameOrPasswordInvalidException.INSTANCE.getMsgKey());
+                        return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
+                    }
                 }
             } else {
                 //若登陆失败
@@ -177,7 +184,8 @@ public class LoginController {
                 }
 
                 //登录失败
-                return new ResponseEntity<>(UsernameOrPasswordInvalidException.INSTANCE, HttpStatus.UNAUTHORIZED);
+                JSONObject error=new JSONObject().accumulate("code",UsernameOrPasswordInvalidException.INSTANCE.getCode()).accumulate("msgKey",UsernameOrPasswordInvalidException.INSTANCE.getMsgKey());
+                return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
             }
         }
         return null;

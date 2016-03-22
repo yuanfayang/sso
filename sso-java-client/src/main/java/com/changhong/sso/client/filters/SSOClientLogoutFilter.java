@@ -58,7 +58,7 @@ public class SSOClientLogoutFilter extends BaseClientFilter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        HttpSession session=httpServletRequest.getSession();
+        HttpSession session = httpServletRequest.getSession();
 
 /*
         //获取用户的userId参数
@@ -76,7 +76,7 @@ public class SSOClientLogoutFilter extends BaseClientFilter {
         }*/
 
         //HttpSession session = SessionStorage.get(userId);
-        logger.info("##########################:"+session.getAttribute(SSOClientFilter.USER_STAT_IN_SESSION_KEY));
+        logger.info("##########################:" + session.getAttribute(SSOClientFilter.USER_STAT_IN_SESSION_KEY));
         //本地应用未登出，则进行登出处理
         try {
             if (session != null && session.getAttribute(SSOClientFilter.USER_STAT_IN_SESSION_KEY) != null) {
