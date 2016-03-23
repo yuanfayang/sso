@@ -108,7 +108,7 @@ public class LoginController {
                 request.getSession().setAttribute(WebConstants.SSO_SERVICE_KEY_IN_SESSION, service);
             }
 
-            JSONObject error=new JSONObject().accumulate("code",EmptyCredentialException.INSTANCE.getCode()).accumulate("msgKey",EmptyCredentialException.INSTANCE.getMsgKey());
+            JSONObject error = new JSONObject().accumulate("code", EmptyCredentialException.INSTANCE.getCode()).accumulate("msgKey", EmptyCredentialException.INSTANCE.getMsgKey());
             return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
         } else {
             //TODO
@@ -122,9 +122,15 @@ public class LoginController {
                 //清除session中的状态信息service
                 request.getSession().removeAttribute(WebConstants.SSO_SERVICE_KEY_IN_SESSION);
 
+
+                JSONObject dataObj = new JSONObject();
+
                 // 如果有加密凭据信息，则写入加密凭据值到cookie中。
                 if (authentication != null) {
-                    if (authentication.getAttributes()!=null){
+
+                    dataObj.accumulate("user", authentication.getPrincipal().getAttributes().get("user"));
+
+                    if (authentication.getAttributes() != null) {
                         Map<String, Object> attributes = authentication.getAttributes();
                         //TODO 写入sso的cookie
                         //SSO服务端加密凭证写cookie中
@@ -134,14 +140,17 @@ public class LoginController {
                             //cookie.setDomain(ReadPropertiesUtils.read("sso.domain"));
                             response.addCookie(cookie);
                         }
-                        /*//TODO 校验是否存在service
+
+                        //TODO 校验是否存在service
                         //SSO客户端加密凭证和参数service都存在，则跳转到对应的页面中
                         if (attributes.get(AuthenticationPostHandler.SSO_CLIENT_EC_KEY) != null
                                 && !StringUtils.isEmpty(attributes.get(WebConstants.SERVICE_PARAM_NAME).toString())) {
                             //TODO 看是否需要进行针对service的跳转操作
                             logger.info("SSO_CLIENT_EC_KEY:{}", attributes.get(AuthenticationPostHandler.SSO_CLIENT_EC_KEY));
 
-                            StringBuffer sb = new StringBuffer(attributes.get(WebConstants.SERVICE_PARAM_NAME).toString());
+                            //由SSO跳转视图
+
+                            /*StringBuffer sb = new StringBuffer(attributes.get(WebConstants.SERVICE_PARAM_NAME).toString());
                             if (attributes.get(WebConstants.SERVICE_PARAM_NAME).toString().contains("?")) {
                                 sb.append("&");
                             } else {
@@ -151,7 +160,10 @@ public class LoginController {
                                     .append("=").append(attributes.get(AuthenticationPostHandler.SSO_CLIENT_EC_KEY).toString());
 
                             response.sendRedirect(sb.toString());
-                        }*/
+                            return null;*/
+
+                            dataObj.accumulate("SSO_CLIENT_EC", attributes.get(AuthenticationPostHandler.SSO_CLIENT_EC_KEY));
+                        }
 
                     }
                     /*else {
@@ -161,9 +173,6 @@ public class LoginController {
                     JSONObject resultObj = new JSONObject();
                     resultObj.put("code", "200");
                     resultObj.put("msg", "登录成功！");
-
-                    JSONObject dataObj = new JSONObject();
-                    dataObj.accumulate("user", authentication.getPrincipal().getAttributes().get("user"));
 
                     resultObj.put("data", dataObj);
                     return new ResponseEntity<>(resultObj, HttpStatus.OK);
@@ -184,7 +193,7 @@ public class LoginController {
                 }
 
                 //登录失败
-                JSONObject error=new JSONObject().accumulate("code",UsernameOrPasswordInvalidException.INSTANCE.getCode()).accumulate("msgKey",UsernameOrPasswordInvalidException.INSTANCE.getMsgKey());
+                JSONObject error = new JSONObject().accumulate("code", UsernameOrPasswordInvalidException.INSTANCE.getCode()).accumulate("msgKey", UsernameOrPasswordInvalidException.INSTANCE.getMsgKey());
                 return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
             }
         }
