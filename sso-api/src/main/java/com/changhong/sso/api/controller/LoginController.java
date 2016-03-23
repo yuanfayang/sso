@@ -153,20 +153,20 @@ public class LoginController {
                             response.sendRedirect(sb.toString());
                         }*/
 
-                        JSONObject resultObj = new JSONObject();
-                        resultObj.put("code", "200");
-                        resultObj.put("msg", "登录成功！");
-
-                        JSONObject dataObj = new JSONObject();
-                        dataObj.accumulate("user", authentication.getPrincipal().getAttributes().get("user"));
-
-                        resultObj.put("data", dataObj);
-                        return new ResponseEntity<>(resultObj, HttpStatus.OK);
                     }
-                    else {
+                    /*else {
                         JSONObject error=new JSONObject().accumulate("code",UsernameOrPasswordInvalidException.INSTANCE.getCode()).accumulate("msgKey",UsernameOrPasswordInvalidException.INSTANCE.getMsgKey());
                         return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
-                    }
+                    }*/
+                    JSONObject resultObj = new JSONObject();
+                    resultObj.put("code", "200");
+                    resultObj.put("msg", "登录成功！");
+
+                    JSONObject dataObj = new JSONObject();
+                    dataObj.accumulate("user", authentication.getPrincipal().getAttributes().get("user"));
+
+                    resultObj.put("data", dataObj);
+                    return new ResponseEntity<>(resultObj, HttpStatus.OK);
                 }
             } else {
                 //若登陆失败

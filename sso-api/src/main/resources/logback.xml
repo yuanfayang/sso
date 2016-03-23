@@ -83,9 +83,9 @@
 	</logger>-->
 
 	<!-- project default level -->
-	<logger name="com.changhong.sso" level="info"/>
+	<!--<logger name="com.changhong.sso" level="info"/>
 
-	<!--log4jdbc -->
+	&lt;!&ndash;log4jdbc &ndash;&gt;
 	<logger name="com.changhong.sso.core.dao" level="INFO" additivity="false">
 		<appender-ref ref="sqlLog" />
 	</logger>
@@ -96,7 +96,7 @@
 
 	<logger name="com.changhong.sso" level="ERROR" additivity="false">
 		<appender-ref ref="errorLog"/>
-	</logger>
+	</logger>-->
 
 	<!-- cxf inbound/outbound logger -->
 	<logger name="org.apache.cxf.services" level="INFO" />
