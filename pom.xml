@@ -10,7 +10,6 @@
         <module>sso-core</module>
         <module>sso-java-client</module>
         <module>sso-app</module>
-        <module>sso-app2</module>
         <module>sso-exception</module>
     </modules>
     <groupId>com.changhong.sso</groupId>

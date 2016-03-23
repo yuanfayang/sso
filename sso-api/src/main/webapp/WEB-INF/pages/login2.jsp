@@ -85,16 +85,12 @@
         <label id="loginError" class="error"></label>
     </div>
 
-    <%--错误提示--%>
     <c:if test="${code!=null}">
         <div id="messageBox" class="alert alert-error ">
             <button id="closeBtn" class="close">×</button>
             <label id="loginError" class="error">错误信息：${msg}</label>
         </div>
     </c:if>
-    <%--错误提示--%>
-
-
     <div id="login-wraper">
         <form id="loginForm" class="form login-form"
               action="${ctx}/api/login" method="post">
@@ -105,13 +101,13 @@
                 <div class="control-group">
                     <div class="controls">
                         <input type="text" id="username" name="username" class="required"
-                               value="${username}" placeholder="登录名">
+                               value="api-test" placeholder="登录名">
                     </div>
                 </div>
 
                 <div class="control-group">
                     <div class="controls">
-                        <input type="password" id="password" name="password"
+                        <input type="password" id="password" name="password" value="apiTest"
                                class="required" placeholder="密码"/>
                     </div>
                 </div>

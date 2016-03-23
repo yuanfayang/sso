@@ -22,6 +22,11 @@ public class UsernamePasswordCredential extends AbstractParameters implements Cr
      */
     private String password;
 
+    /**
+     * 用户在用户体系中的token
+     */
+    private String token;
+
     public UsernamePasswordCredential() {
     }
 
@@ -44,6 +49,14 @@ public class UsernamePasswordCredential extends AbstractParameters implements Cr
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     @Override

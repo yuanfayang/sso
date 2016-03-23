@@ -1,6 +1,5 @@
 package com.changhong.sso.api.result;
 
-import com.changhong.sso.api.web.util.ReadPropertiesUtils;
 import com.changhong.sso.common.web.utils.WebConstants;
 import com.changhong.sso.core.authentication.Authentication;
 import com.changhong.sso.core.authentication.AuthenticationPostHandler;
@@ -47,7 +46,7 @@ public class DefaultLoginResultToView implements LoginResultToView {
                 if (attributes.get(AuthenticationPostHandler.SSO_SERVER_EC_KEY) != null) {
                     Cookie cookie = new Cookie(WebConstants.SSO_SERVER_EC_COOKIE_KEY, attributes.get(AuthenticationPostHandler.SSO_SERVER_EC_KEY).toString());
                     //限制Cookie的域
-                    cookie.setDomain(ReadPropertiesUtils.read("sso.domain"));
+                    //cookie.setDomain(ReadPropertiesUtils.read("sso.domain"));
                     response.addCookie(cookie);
                 }
 
@@ -96,7 +95,6 @@ public class DefaultLoginResultToView implements LoginResultToView {
         StringBuffer sb = new StringBuffer(service);
         if (service.contains("?")) {
             sb.append("&");
-
         } else {
             sb.append("?");
         }

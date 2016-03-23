@@ -4,6 +4,7 @@ import com.changhong.sso.common.core.authentication.Credential;
 import com.changhong.sso.common.core.authentication.EncryCredential;
 import com.changhong.sso.common.core.authentication.EncryCredentialManager;
 import com.changhong.sso.common.core.entity.EncryCredentialInfo;
+import com.changhong.sso.core.authentication.status.Authenticated;
 import com.changhong.sso.exception.AuthenticationException;
 import com.changhong.sso.exception.InvalidEncryededentialException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +27,10 @@ public class EncryCredentialAuthenticaionHandler extends AbstractPreAndPostProce
     private static final Class<EncryCredential> DEFAULT_CLASS = EncryCredential.class;
 
     @Override
-    protected boolean doAuthentication(Credential credential) throws AuthenticationException {
+    protected Authenticated doAuthentication(Credential credential) throws AuthenticationException {
         //不支持凭证直接返回false
         if (!this.supports(credential)) {
-            return false;
+            return null;
         }
         //如果是加密过的凭证信息
         if (credential != null && credential instanceof EncryCredential) {
@@ -42,14 +43,23 @@ public class EncryCredentialAuthenticaionHandler extends AbstractPreAndPostProce
                 if (encryCredentialInfo!=null){
                     encryCredential.setEncryCredentialInfo(encryCredentialInfo);
                     //检查加密凭证的合法性
-                    return this.encryCredentialManager.checkEncryCredentialInfo(encryCredentialInfo);
+                    Authenticated authenticated=new Authenticated();
+                    if (this.encryCredentialManager.checkEncryCredentialInfo(encryCredentialInfo)){
+                        authenticated.setUser(encryCredentialInfo.getUser());
+                        authenticated.setToken(encryCredentialInfo.getToken());
+                        authenticated.setAuthenticated(true);
+                    }
+                    else {
+                        authenticated.setAuthenticated(false);
+                    }
+                    return authenticated;
                 }
             } catch (InvalidEncryededentialException e) {
                 e.printStackTrace();
-                return false;
+                return null;
             }
         }
-        return false;
+        return null;
     }
 
     /**

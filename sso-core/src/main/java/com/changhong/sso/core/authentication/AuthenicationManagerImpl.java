@@ -3,7 +3,9 @@ package com.changhong.sso.core.authentication;
 import com.changhong.sso.common.core.authentication.Credential;
 import com.changhong.sso.core.authentication.handlers.AuthenticationHandler;
 import com.changhong.sso.core.authentication.resolvers.CredentialToPrincipalResolver;
+import com.changhong.sso.core.authentication.status.Authenticated;
 import com.changhong.sso.exception.*;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,6 +42,7 @@ public class AuthenicationManagerImpl implements AuthenticationManager {
 
     /**
      * 对用户凭证进行人生处理，返回认证结果
+     *
      * @param credential 用户凭证
      * @return 认证结果信息
      * @throws InvalidCrendentialException
@@ -49,7 +52,7 @@ public class AuthenicationManagerImpl implements AuthenticationManager {
         //是否找到支持的凭据认证处理器。
         boolean foundSupported = false;
         //是否认证通过。
-        boolean authenticated = false;
+        Authenticated authenticated = null;
         //若凭据为空，则跑出异常。
         if (credential == null) {
             throw EmptyCredentialException.INSTANCE;
@@ -67,7 +70,7 @@ public class AuthenicationManagerImpl implements AuthenticationManager {
                     try {
                         authenticated = authenticationHandler.authenticate(credential);
                         //若认证成功，跳出循环
-                        if (authenticated) {
+                        if (authenticated != null && authenticated.isAuthenticated()) {
                             break;
                         }
                     } catch (AuthenticationException e) {
@@ -82,7 +85,7 @@ public class AuthenicationManagerImpl implements AuthenticationManager {
             throw UnsupportedCredentialsException.INSTANCE;
         }
         //若认证未通过，则跑出最后异常
-        if (!authenticated) {
+        if (authenticated == null || !authenticated.isAuthenticated()) {
             throw authenticationException;
         }
 
@@ -102,6 +105,28 @@ public class AuthenicationManagerImpl implements AuthenticationManager {
                         break;
                     }
                 }
+            }
+        }
+
+       /* *//**
+         * 如果是用户名密码的明文凭证
+         *//*
+        //若是用户名密码凭证，则设置用户的token
+        if (credential instanceof UsernamePasswordCredential) {
+            principal.getAttributes().remove("token");
+            principal.getAttributes().put("token",((UsernamePasswordCredential) credential).getToken());
+        }*/
+
+        //将用户信息放入principal中
+        if (principal.getAttributes().containsKey("user")) {
+            if (authenticated.getUser() != null) {
+                principal.getAttributes().remove("user");
+                principal.getAttributes().put("user", authenticated.getUser());
+            }
+        }
+        else {
+            if (authenticated.getUser() != null) {
+                principal.getAttributes().put("user", authenticated.getUser());
             }
         }
 

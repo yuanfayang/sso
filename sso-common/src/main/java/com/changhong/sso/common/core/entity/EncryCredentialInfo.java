@@ -1,5 +1,7 @@
 package com.changhong.sso.common.core.entity;
 
+import com.alibaba.fastjson.JSONObject;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -25,6 +27,16 @@ public class EncryCredentialInfo implements Serializable {
     private Date expiredTime;
     //加密凭证的盐
     private String salt;
+
+    /**
+     * 用户基本信息
+     */
+    private User user;
+
+    /**
+     * 用户的token
+     */
+    private String token;
 
     public String getAppId() {
         return appId;
@@ -72,5 +84,21 @@ public class EncryCredentialInfo implements Serializable {
 
     public void setSalt(String salt) {
         this.salt = salt;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

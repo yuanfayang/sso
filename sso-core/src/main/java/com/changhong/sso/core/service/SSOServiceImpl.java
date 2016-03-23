@@ -51,6 +51,7 @@ public class SSOServiceImpl implements SSOService {
 
             //添加登录的应用记录
         } catch (InvalidCrendentialException e) {
+            logger.error("认证用户凭证失败：{}",e.getMessage());
             e.printStackTrace();
             //登录失败
             loginResult.setSuccess(false);
@@ -63,15 +64,21 @@ public class SSOServiceImpl implements SSOService {
     }
 
     @Override
-    public void logout(Credential credential,String service) throws InvalidCrendentialException {
+    public void logout(Credential credential) throws InvalidCrendentialException {
         if (credential == null) {
             return;
         }
         //对凭证进行一次认证
-        Authentication authentication = authenticationManager.authenticat(credential);
+        Authentication authentication = null;
+        try {
+            authentication = authenticationManager.authenticat(credential);
+        } catch (InvalidCrendentialException e) {
+            logger.error("单点登出时，校验用户信息：{},不合法",credential);
+            e.printStackTrace();
+        }
 
         //登出所有的应用。
-        logoutAppService.logoutApp(authentication.getPrincipal().getId(), service);
+        //logoutAppService.logoutApp(authentication.getPrincipal().getId(), service);
 
         //清除用户登录记录
         if (authentication != null && authentication.getPrincipal() != null) {

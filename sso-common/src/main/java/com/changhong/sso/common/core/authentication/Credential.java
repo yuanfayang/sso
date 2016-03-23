@@ -11,6 +11,7 @@ package com.changhong.sso.common.core.authentication;
  */
 public interface Credential {
 
+
     /**
      * 是否未认证过的原始凭证
      * @return 是否原始凭证，true：原始凭据，false：加密后的凭据
