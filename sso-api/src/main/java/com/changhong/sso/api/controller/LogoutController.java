@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -60,13 +59,13 @@ public class LogoutController {
      */
     @RequestMapping(value = "/logout")
     public void loglout(@RequestParam(value = "appId", required = false) String appId,
-                                @RequestParam(value = "service", required = false) String service,
-                                HttpServletRequest request,
-                                HttpServletResponse response,
-                                HttpSession session) {
+                        @RequestParam(value = "service", required = false) String service,
+                        HttpServletRequest request,
+                        HttpServletResponse response,
+                        HttpSession session) {
         ModelAndView modelAndView = new ModelAndView();
 
-        logger.info("service:{},正在登出:",service);
+        logger.info("service:{},正在登出:", service);
         //解析并验证用户凭证
         Credential credential = credentialResolver.resolveCredential(request);
         try {
@@ -104,7 +103,7 @@ public class LogoutController {
             response.setCharacterEncoding("UTF-8");
             response.getWriter().println(sb.toString());
         } catch (IOException e) {
-            logger.error("执行登出时，jsonp异常：{}",e.getMessage());
+            logger.error("执行登出时，jsonp异常：{}", e.getMessage());
             e.printStackTrace();
         }
 
@@ -134,14 +133,14 @@ public class LogoutController {
                               @RequestParam(value = "logoutSuccessUrl", required = true) String logoutSuccessUrl,
                               HttpServletRequest request,
                               HttpServletResponse response) {
-        logger.info("app:'{}',开始获取logout.js",appId);
+        logger.info("app:'{}',开始获取logout.js", appId);
         App app = appService.finAppById(appId);
 
         if (app == null) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
 
-        App ssoServer=appService.findSSOServerApp();
+        App ssoServer = appService.findSSOServerApp();
 
         try {
             //读取模板文件
@@ -158,11 +157,11 @@ public class LogoutController {
                 response.setCharacterEncoding("UTF-8");
                 response.getWriter().println(javascript);
             } catch (IOException e) {
-                logger.error("app:'{}',获取logout.js，出现异常：{}",appId,e.getMessage() );
+                logger.error("app:'{}',获取logout.js，出现异常：{}", appId, e.getMessage());
                 e.printStackTrace();
             }
         } catch (Exception e) {
-            logger.error("app:'{}',获取logout.js，出现异常：{}",appId,e.getMessage() );
+            logger.error("app:'{}',获取logout.js，出现异常：{}", appId, e.getMessage());
             e.printStackTrace();
         }
 
@@ -171,15 +170,16 @@ public class LogoutController {
 
     /**
      * 获得回调函数的名称
+     *
      * @param defalutCallbackName 默认的回调函数名称。
-     * @param request 请求对象。
+     * @param request             请求对象。
      * @return 回调函数的名称
      */
-    private String getCallbackName(String defalutCallbackName, HttpServletRequest request){
+    private String getCallbackName(String defalutCallbackName, HttpServletRequest request) {
         //获得传递的回调函数名。
         String callbackName = request.getParameter("callbackName");
         //如果参数是空，则使用默认的回调函数名。
-        if(StringUtils.isEmpty(callbackName)){
+        if (StringUtils.isEmpty(callbackName)) {
             callbackName = defalutCallbackName;
         }
         return callbackName;

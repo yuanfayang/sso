@@ -8,103 +8,81 @@
 <!--    http://www.qos.ch/shop/products/professionalSupport         -->
 <!--                                                                -->
 <configuration>
-	<jmxConfigurator />
-
-	<property name="BASEPATH" value="../data/logs/sso"/>
-
-	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
-		<Target>System.out</Target>
-		<encoder>
-			<pattern>[SSO] %d{yyyy-MM-dd HH:mm:ss} %5p %c{1}:%L - %m%n</pattern>
-		</encoder>
-	</appender>
-
-	<appender name="sqlLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+	<property name="BasePath" value="data/SSO/logs"/>
+	<appender name="A5" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
-		<File>${BASEPATH}/sso-sqlExecute.log</File>
+		<DatePattern>'_'yyyy-MM-dd'.log'</DatePattern>
+		<File>${BasePath}/sqlExecute.log</File>
 		<Encoding>UTF-8</Encoding>
 		<encoder>
-			<pattern>[SSO] %d{yyyy-MM-dd HH:mm:ss} [%t:%r] - [%p] %m%n</pattern>
+			<pattern>[SSO:API] %d{yyyy-MM-dd HH:mm:ss} [%t:%r] - [%p] %m%n</pattern>
 		</encoder>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
 			<level>DRUID</level>
 		</filter>
 		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
 			<maxIndex>5</maxIndex>
-			<FileNamePattern>${BASEPATH}/sso-sqlExecute.log.%i</FileNamePattern>
+			<FileNamePattern>${BasePath}/sqlExecute.log.%i</FileNamePattern>
 		</rollingPolicy>
-		<!--<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>${BASEPATH}/sso-sqlExecute.%d{yyyy-MM-dd}.log</fileNamePattern>
-			&lt;!&ndash;最多保留30天&ndash;&gt;
-			<maxHistory>30</maxHistory>
-		</rollingPolicy>-->
 		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-			<MaxFileSize>10MB</MaxFileSize>
+			<MaxFileSize>50MB</MaxFileSize>
 		</triggeringPolicy>
 	</appender>
 
-	<appender name="businessLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<!--See http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
-		<!--and http://logback.qos.ch/manual/appenders.html#TimeBasedRollingPolicy-->
-		<!--for further documentation-->
-		<Append>true</Append>
-		<File>${BASEPATH}/sso.log</File>
+	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+		<Target>System.out</Target>
 		<encoder>
-			<pattern>[SSO] %d{yyyy-MM-dd HH:mm:ss} [%t:%r] - [%p] %m%n</pattern>
+			<pattern>[SSO:API] %d{yyyy-MM-dd HH:mm:ss} %5p %c{1}:%L - %m%n</pattern>
 		</encoder>
-		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<FileNamePattern>${BASEPATH}/sso.%d{yyyy-MM-dd}.log</FileNamePattern>
-			<!--最多保留30天-->
-			<maxHistory>30</maxHistory>
-		</rollingPolicy>
 	</appender>
 
-	<appender name="errorLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+	<appender name="D" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<!--See http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
 		<!--and http://logback.qos.ch/manual/appenders.html#TimeBasedRollingPolicy-->
 		<!--for further documentation-->
 		<Append>true</Append>
-		<File>${BASEPATH}/sso-error.log</File>
-		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<FileNamePattern>${BASEPATH}/sso.error.%d{yyyy-MM-dd}.log</FileNamePattern>
-		</rollingPolicy>
 		<encoder>
-			<pattern>[SSO] %d{yyyy-MM-dd HH:mm:ss} [%t:%r] - [%p] %m%n</pattern>
+			<pattern>[SSO:API]%d{yyyy-MM-dd HH:mm:ss} [%t:%r] - [%p] %m%n</pattern>
 		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${BasePath}/applog.%d{yyyy-MM-dd}.log</FileNamePattern>
+		</rollingPolicy>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
 	</appender>
-<!--	<logger name="com.changhong.sso" level="INFO">
-		<appender-ref ref="D"/>
+
+	<appender name="E" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<!--See http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
+		<!--and http://logback.qos.ch/manual/appenders.html#TimeBasedRollingPolicy-->
+		<!--for further documentation-->
+		<Append>true</Append>
+		<encoder>
+			<pattern>[SSO:API] %d{yyyy-MM-dd HH:mm:ss} [%t:%r] - [%p] %m%n</pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${BasePath}/app-error.%d{yyyy-MM-dd}.log</FileNamePattern>
+		</rollingPolicy>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>ERROR</level>
+		</filter>
+	</appender>
+
+	<logger name="sqlLogger" additivity="false" level="DEBUG">
+		<appender-ref ref="A5"/>
 	</logger>
-	<logger name="com.changhong.sso" level="ERROR">
+	<!--log4jdbc -->
+	<logger name="jdbc.sqltiming" level="INFO" >
+		<appender-ref ref="A5"/>
+		<appender-ref ref="stdout"/>
+	</logger>
+
+	<logger name="errorLogger" additivity="false" level="ERROR">
 		<appender-ref ref="E"/>
 	</logger>
-	<logger name="com.changhong." level="DEBUG">
-		<appender-ref ref="A5"/>
-	</logger>-->
-
-	<!-- project default level -->
-	<!--<logger name="com.changhong.sso" level="info"/>
-
-	&lt;!&ndash;log4jdbc &ndash;&gt;
-	<logger name="com.changhong.sso.core.dao" level="INFO" additivity="false">
-		<appender-ref ref="sqlLog" />
-	</logger>
-
-	<logger name="com.changhong.sso" level="INFO" additivity="false">
-		<appender-ref ref="businessLog"/>
-	</logger>
-
-	<logger name="com.changhong.sso" level="ERROR" additivity="false">
-		<appender-ref ref="errorLog"/>
-	</logger>-->
-
-	<!-- cxf inbound/outbound logger -->
-	<logger name="org.apache.cxf.services" level="INFO" />
 
 	<root level="INFO">
-		<appender-ref ref="console"/>
-		<!--<appender-ref ref="businessLog"/>-->
-<!--		<appender-ref ref="F"/>
-		<appender-ref ref="A5"/>-->
+		<appender-ref ref="stdout"/>
+		<appender-ref ref="D"/>
 	</root>
 </configuration>

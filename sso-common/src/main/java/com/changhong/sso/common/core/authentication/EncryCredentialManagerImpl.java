@@ -8,6 +8,7 @@ import com.changhong.sso.common.core.entity.EncryCredentialInfo;
 import com.changhong.sso.common.core.entity.SSOKey;
 import com.changhong.sso.common.core.entity.User;
 import com.changhong.sso.common.core.service.KeyService;
+import com.changhong.sso.common.utils.StringUtil;
 import com.changhong.sso.exception.InvalidEncryededentialException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -65,19 +66,21 @@ public class EncryCredentialManagerImpl implements EncryCredentialManager {
 
     @Override
     public String encrypt(EncryCredentialInfo encryCredentialInfo) {
+        logger.info("开始加密敏感信息.");
         StringBuffer stringBuffer = new StringBuffer();
         if (encryCredentialInfo != null) {
             try {
                 String data = encryptSensitiveInfo(encryCredentialInfo);
+                logger.info("加密后的用户敏感信息是:{}",data);
                 stringBuffer
                         .append(data).append("?appId=")
                         .append(encryCredentialInfo.getAppId())
                         .append("&keyId=")
                         .append(encryCredentialInfo.getKeyId());
                 //先进行Base64编码，再进行URL编码，避免传输错误
-                logger.info("明文ticket:{}", stringBuffer.toString());
-                logger.info("ticket:{}", URLEncoder.encode(Base64Coder.encryptBASE64(stringBuffer.toString().getBytes()), ENCODE));
-                return URLEncoder.encode(Base64Coder.encryptBASE64(stringBuffer.toString().getBytes()), ENCODE);
+                logger.info("半明文用户认证:{}", stringBuffer.toString());
+                logger.info("全密文的用户认证:{}", URLEncoder.encode(Base64Coder.encryptBASE64(stringBuffer.toString().getBytes()), ENCODE));
+                return StringUtil.encodeBase64URLSafeString(stringBuffer.toString());
             } catch (Exception e) {
                 logger.error("encrypt data exception:{}", e.getMessage());
                 e.printStackTrace();
@@ -110,10 +113,13 @@ public class EncryCredentialManagerImpl implements EncryCredentialManager {
         logger.info("tickec:" + credential.toString());
         EncryCredentialInfo encryCredentialInfo = new EncryCredentialInfo();
         try {
-            //先进行URL解码
+            /*//先进行URL解码
             credential = URLDecoder.decode(credential, ENCODE);
             //再进行BASE64解码
-            credential = new String(Base64Coder.decryptBASE64(credential));
+            credential = new String(Base64Coder.decryptBASE64(credential));*/
+            credential=new String(StringUtil.decodeBase64URLSafeString(credential),ENCODE);
+
+            logger.info("#######:{}", credential);
 
             //问号分割字符串
             String[] items = credential.split("\\?");
@@ -142,7 +148,8 @@ public class EncryCredentialManagerImpl implements EncryCredentialManager {
                 if (!StringUtils.isEmpty(items[0])) {
                     //解码敏感信息
                     //先进行Base64解码
-                    byte[] data = Base64Coder.decryptBASE64(items[0]);
+                    //byte[] data = Base64Coder.decryptBASE64(items[0]);
+                    byte[] data=StringUtil.decodeBase64URLSafeString(items[0]);
                     //查询秘钥
                     SSOKey ssoKey = keyService.findByKeyId(encryCredentialInfo.getKeyId());
                     if (ssoKey != null) {
@@ -160,7 +167,7 @@ public class EncryCredentialManagerImpl implements EncryCredentialManager {
                             encryCredentialInfo.setUserId(userId == null ? null : userId.toString());
                             encryCredentialInfo.setCreateTime(createTime == null ? null : new Date(Long.parseLong(createTime.toString())));
                             encryCredentialInfo.setExpiredTime(expireTime == null ? null : new Date(Long.parseLong(expireTime.toString())));
-                            encryCredentialInfo.setUser(user == null ? null : JSON.parseObject(user.toString(),User.class));
+                            encryCredentialInfo.setUser(user == null ? null : JSON.parseObject(user.toString(), User.class));
                             encryCredentialInfo.setToken(token == null ? null : token.toString());
                         }
                     }
@@ -191,7 +198,6 @@ public class EncryCredentialManagerImpl implements EncryCredentialManager {
     private String encryptSensitiveInfo(EncryCredentialInfo encryCredentialInfo) throws Exception {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("username", encryCredentialInfo.getUserId());
-        map.put("user", encryCredentialInfo.getUser());
         map.put("token", encryCredentialInfo.getUser().getToken());
         if (encryCredentialInfo.getCreateTime() != null) {
             map.put("createTime", encryCredentialInfo.getCreateTime());
@@ -207,8 +213,9 @@ public class EncryCredentialManagerImpl implements EncryCredentialManager {
             Key key = ssoKey.toSecurityKey();
             if (key != null) {
                 byte[] data = DESCoder.encrypt(JSONObject.toJSONString(map).getBytes(), key);
+
                 //先用Base64编码，再用URL编码
-                return Base64Coder.encryptBASE64(data);
+                return StringUtil.encodeBase64URLSafeString(data);
             }
             return "";
         }

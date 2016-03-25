@@ -51,7 +51,11 @@ public class DefaultAuthenticationPostHandler implements AuthenticationPostHandl
         AuthenticationImpl authentication = new AuthenticationImpl();
         authentication.setAuthenticationDate(createTime);
         authentication.setPrincipal(principal);
-        encryCredentialWithSSOKey(authentication,credential,principal);
+        logger.info("********************************************");
+        logger.info("开始加密生成sso用户凭证.");
+        encryCredentialWithSSOKey(authentication, credential, principal);
+        logger.info("********************************************");
+        logger.info("开始加密生成app用户凭证.");
         encryCredentialWithAppKey(authentication,credential,principal);
         return authentication;
     }
@@ -72,6 +76,7 @@ public class DefaultAuthenticationPostHandler implements AuthenticationPostHandl
                 logger.error("no SSO key info");
                 throw NoSSOKeyException.INSTANCE;
             }
+            logger.info("当前处理SSO的用户凭证");
 
             String encryCredential = encryCredentialManager.encrypt(buildEncryCredentialInfo(ssoApp.getAppId(), authentication, principal));
             //加密后的凭据信息写入到动态属性中。
@@ -98,6 +103,7 @@ public class DefaultAuthenticationPostHandler implements AuthenticationPostHandl
                 //查找ki4so服务对应的应用信息。
                 App clientApp = appService.findAppByHost(service);
                 if (clientApp != null) {
+                    logger.info("当前处理的APP应用是:{}",JSONObject.toJSON(clientApp));
                     String encryCredential = encryCredentialManager.encrypt(buildEncryCredentialInfo(clientApp.getAppId(), authentication, principal));
                     //加密后的凭据信息写入到动态属性中。
                     Map<String, Object> attributes = authentication.getAttributes();
