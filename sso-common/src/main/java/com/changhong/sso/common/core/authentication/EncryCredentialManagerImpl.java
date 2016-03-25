@@ -199,6 +199,7 @@ public class EncryCredentialManagerImpl implements EncryCredentialManager {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("username", encryCredentialInfo.getUserId());
         map.put("token", encryCredentialInfo.getUser().getToken());
+        map.put("user",encryCredentialInfo.getUser());
         if (encryCredentialInfo.getCreateTime() != null) {
             map.put("createTime", encryCredentialInfo.getCreateTime());
         }

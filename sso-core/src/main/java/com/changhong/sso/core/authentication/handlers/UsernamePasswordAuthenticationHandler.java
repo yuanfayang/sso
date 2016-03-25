@@ -21,7 +21,7 @@ import org.springframework.util.StringUtils;
 public class UsernamePasswordAuthenticationHandler extends AbstractUsernamePasswordAuthenticationHandler {
     private final String userCenterHost = "http://wdev.camplus.cn:8003";
 
-    private final String loginApi="/sso/user/login";
+    private final String loginApi = "/sso/user/login";
 
     /**
      * 模拟的验证用户名密码的凭证验证器。具体的等对接用户体系再确定
@@ -56,8 +56,10 @@ public class UsernamePasswordAuthenticationHandler extends AbstractUsernamePassw
         //解析报文
         //报文若为'[]'即出现错误
         if (!StringUtils.isEmpty(result)) {
-            if (result.startsWith("[")){
-                throw UsernameOrPasswordInvalidException.INSTANCE;
+            if (result.startsWith("[")) {
+                AuthenticationException exception = UsernameOrPasswordInvalidException.INSTANCE;
+                exception.setMsgKey(result);
+                throw exception;
             }
             JSONObject resultJsonObj = JSONObject.parseObject(result);
             //成功得到Token则则证明登录成功
@@ -69,9 +71,9 @@ public class UsernamePasswordAuthenticationHandler extends AbstractUsernamePassw
                 //设置token
                 authenticated.setToken(resultJsonObj.getString("token"));
                 //设置用户信息
-                JSONObject userObj=resultJsonObj.getJSONObject("user");
+                JSONObject userObj = resultJsonObj.getJSONObject("user");
                 //初始化用户信息
-                User user=new User();
+                User user = new User();
                 user.setMail(userObj.getString("mail"));
                 user.setName(userObj.getString("name"));
                 user.setRealName(userObj.getString("realname"));
