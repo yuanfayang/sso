@@ -235,10 +235,8 @@ private EncryCredentialInfo parseEncryCredential(String credential) throws Inval
 
         EncryCredentialInfo encryCredentialInfo = new EncryCredentialInfo();
         try {
-            //先进行URL解码
-            credential = URLDecoder.decode(credential, ENCODE);
-            //再进行BASE64解码
-            credential = new String(Base64Coder.decryptBASE64(credential));
+        //进行Base64URLSafe解码
+          credential=new String(StringUtil.decodeBase64URLSafeString(credential),ENCODE);          
 
             //问号分割字符串
             String[] items = credential.split("\\?");
@@ -266,8 +264,8 @@ private EncryCredentialInfo parseEncryCredential(String credential) throws Inval
                 //第一个字符串不为空
                 if (!StringUtils.isEmpty(items[0])) {
                     //解码敏感信息
-                    //先进行Base64解码
-                    byte[] data = Base64Coder.decryptBASE64(items[0]);
+                    //先进行Base64URLSafe解码
+                    byte[] data = StringUtil.decodeBase64URLSafeString(items[0]);
                     //查询秘钥
                     SSOKey ssoKey = keyService.findByKeyId(encryCredentialInfo.getKeyId());
 
@@ -306,6 +304,16 @@ private EncryCredentialInfo parseEncryCredential(String credential) throws Inval
             throw InvalidEncryededentialException.INSTANCE;
         }
         return encryCredentialInfo;
+    }
+    
+    public static byte[] decodeBase64URLSafeString(String data) throws UnsupportedEncodingException {
+        if (data.contains("-")) {
+            data = data.replaceAll("-", "+");
+        }
+        if (data.contains("_")) {
+            data = data.replaceAll("_", "/");
+        }
+        return Base64.decodeBase64(data);
     }
 ```
 

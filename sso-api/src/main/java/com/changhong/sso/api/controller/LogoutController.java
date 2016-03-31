@@ -147,9 +147,9 @@ public class LogoutController {
             String javascript = new String(ReadStreamUtil.readStream(LogoutController.class.getResourceAsStream("/common/logout.js")), "UTF-8");
 
             //替换一些参数值。
-            javascript = javascript.replaceAll("\\$\\{currentAppLogoutUrl\\}", app.getLogoutUrl());
-            javascript = javascript.replaceAll("\\$\\{logoutSuccessUrl\\}", logoutSuccessUrl);
-            javascript = javascript.replaceAll("\\$\\{ssoServerHost\\}", ssoServer.getHost());
+            javascript = javascript.replaceAll("\\$\\{currentAppLogoutUrl\\}", app.getLogoutUrl().trim());
+            javascript = javascript.replaceAll("\\$\\{logoutSuccessUrl\\}", logoutSuccessUrl.trim());
+            javascript = javascript.replaceAll("\\$\\{ssoServerHost\\}", ssoServer.getHost().trim());
 
             //替换一些参数值。
             try {

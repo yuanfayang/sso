@@ -3,6 +3,8 @@ package com.changhong.sso.common.utils;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.codec.binary.Base64;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -18,6 +20,7 @@ import java.util.UUID;
  * Created by wei on 14-3-12.
  */
 public class StringUtil extends org.apache.commons.lang3.StringUtils {
+    private static final Logger logger = LoggerFactory.getLogger(StringUtil.class);
 
     public static String generateUuidString() {
         UUID uuid = UUID.randomUUID();
@@ -107,34 +110,42 @@ public class StringUtil extends org.apache.commons.lang3.StringUtils {
 
     public static String encodeBase64URLSafeString(String data) throws UnsupportedEncodingException {
         String base64str = Base64.encodeBase64String(data.getBytes());
+        logger.info("Base64URLSafe编码之前的字符串:{}", base64str);
         if (base64str.contains("+")) {
             base64str = base64str.replaceAll("\\+", "-");
         }
         if (base64str.contains("/")) {
             base64str = base64str.replaceAll("/", "_");
         }
-
+        logger.info("*****************************************");
+        logger.info("Base64URLSafe编码之后的字符串:{}", base64str);
         return base64str;
     }
 
     public static String encodeBase64URLSafeString(byte[] bytes) throws UnsupportedEncodingException {
         String base64str = Base64.encodeBase64String(bytes);
+
+        logger.info("Base64URLSafe编码之前的字符串:{}", base64str);
         if (base64str.contains("+")) {
             base64str = base64str.replaceAll("\\+", "-");
         }
         if (base64str.contains("/")) {
             base64str = base64str.replaceAll("/", "_");
         }
+        logger.info("*****************************************");
+        logger.info("Base64URLSafe编码之后的字符串:{}", base64str);
         return base64str;
     }
 
     public static byte[] decodeBase64URLSafeString(String data) throws UnsupportedEncodingException {
+        logger.info("Base64URLSafe解码之前的字符串:{}", data);
         if (data.contains("-")) {
             data = data.replaceAll("-", "+");
         }
         if (data.contains("_")) {
             data = data.replaceAll("_", "/");
         }
+        logger.info("Base64URLSafe替换特殊字符之后的字符串:{}", data);
         return Base64.decodeBase64(data);
     }
 
