@@ -38,7 +38,7 @@ public class StringUtilTest extends TestCase {
     public void testGenerateAppIdAndKey(){
         String appId=StringUtil.generateUuidString();
 
-        String key=StringUtil.getRandomString(16);
+        String key=StringUtil.getRandomString(24);
 
         System.out.println("appid-->"+appId);
         System.out.println("key-->"+key);

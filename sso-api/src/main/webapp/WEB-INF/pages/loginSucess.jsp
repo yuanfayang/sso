@@ -22,6 +22,6 @@
 <p>
     <a href="javascript:logout()">统一注销</a>&nbsp;&nbsp;&nbsp;
 </p>
-<script type="application/javascript" src="${ctx}/api/logoutJs?appId=3b0d556d3add420596a9afdd58f1bc10&logoutSuccessUrl=http://127.0.0.1:8080/sso/api/login"></script>
+<script type="application/javascript" src="${ctx}/api/logoutJs?appId=3b0d556d3add420596a9afdd58f1bc10&logoutSuccessUrl=http://111.9.116.181:20160/sso/api/login"></script>
 </body>
 </html>

@@ -16,7 +16,7 @@ public class DESCoder {
 	*/
 	private static final String KEY_ALGORITHM = "DESede";
 	
-	private static final String DEFAULT_CIPHER_ALGORITHM = "DESede/ECB/ISO10126Padding";
+	private static final String DEFAULT_CIPHER_ALGORITHM = "DESede/CBC/PKCS5Padding";
 	
 	private static final int KEY_SIZE = 168;
 	

@@ -110,6 +110,7 @@ public class DefaultAuthenticationPostHandler implements AuthenticationPostHandl
                     if (attributes == null) {
                         attributes = new HashMap<String, Object>();
                     }
+                   // attributes.put(SSO_CLIENT_EC_KEY, encryCredential);
                     attributes.put(SSO_CLIENT_EC_KEY, encryCredential);
                     attributes.put(WebConstants.SERVICE_PARAM_NAME, service);
                     authentication.setAttributes(attributes);

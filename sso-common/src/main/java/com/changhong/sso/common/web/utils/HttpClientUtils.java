@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -72,7 +73,12 @@ public class HttpClientUtils {
         //执行http请求
         HttpResponse response = null;
         try {
+            Date startTime=new Date();
+            logger.info("请求开始时间:{}",startTime.getTime());
             response = httpClient.execute(httpPost);
+            Date endTime=new Date();
+            logger.info("请求结束时间;{}",endTime.getTime());
+            logger.info("请求耗时;{}ms",endTime.getTime()-startTime.getTime());
 
             return resolveResponseHttpEntityAsString(response);
         } catch (IOException e) {
@@ -150,7 +156,13 @@ public class HttpClientUtils {
 
             httpPost.setEntity(stringEntity);
 
+            Date startTime=new Date();
+            logger.info("http请求开始时间:{}", startTime.getTime());
             response = httpClient.execute(httpPost);
+
+            Date endTime=new Date();
+            logger.info("请求结束时间;{}",endTime.getTime());
+            logger.info("请求耗时;{}ms",endTime.getTime()-startTime.getTime());
             return resolveResponseHttpEntityAsString(response);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
